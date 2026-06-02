@@ -22,8 +22,8 @@ export default async function handler(req, res) {
     emailEnviado = false;
   }
 
-  registrarRD(req.body, perfil).catch(() => {});
-  enviarNotificacaoInterna(req.body, perfil).catch(() => {});
+  registrarRD(req.body, perfil).catch(err => console.error('[RD]', err.message));
+  enviarNotificacaoInterna(req.body, perfil).catch(err => console.error('[INTERNO]', err.message));
 
   return res.status(200).json({ ok: true, perfil, analiseHtml, emailEnviado });
 }
@@ -194,20 +194,40 @@ const PERGUNTAS = {
 };
 
 async function enviarNotificacaoInterna(form, perfil) {
-  const { dados, respostas, total, bloco1, bloco2, bloco3, bloco4, bloco5 } = form;
+  const dados    = form.dados    || {};
+  const respostas = form.respostas || {};
+  const total    = form.total    || 0;
+  const bloco1   = form.bloco1   || 0;
+  const bloco2   = form.bloco2   || 0;
+  const bloco3   = form.bloco3   || 0;
+  const bloco4   = form.bloco4   || 0;
+  const bloco5   = form.bloco5   || 0;
+
   const destino = process.env.INTERNAL_EMAIL || 'douglas@alterconteudo.com.br';
-  const agora = new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' });
+  const agora   = new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' });
 
-  const linha = (label, valor) => `
-    <tr>
-      <td style="padding:8px 12px;font-size:13px;font-weight:600;color:#444;background:#f9f9f9;width:38%;vertical-align:top;border-bottom:1px solid #eee;">${label}</td>
-      <td style="padding:8px 12px;font-size:13px;color:#222;background:#fff;vertical-align:top;border-bottom:1px solid #eee;">${valor || '—'}</td>
-    </tr>`;
+  console.log('[INTERNO] Enviando notificação para', destino, '— respondente:', dados.email);
 
-  const respostasRows = Object.entries(PERGUNTAS).map(([key, pergunta]) => {
-    const resp = respostas?.[key];
-    return linha(pergunta, resp || '—');
-  }).join('');
+  function linha(label, valor) {
+    const v = valor || '—';
+    return '<tr>'
+      + '<td style="padding:8px 12px;font-size:13px;font-weight:600;color:#444;background:#f9f9f9;width:38%;vertical-align:top;border-bottom:1px solid #eee;">' + label + '</td>'
+      + '<td style="padding:8px 12px;font-size:13px;color:#222;background:#fff;vertical-align:top;border-bottom:1px solid #eee;">' + v + '</td>'
+      + '</tr>';
+  }
+
+  const telefoneLink = dados.telefone
+    ? '<a href="https://wa.me/55' + dados.telefone.replace(/\D/g, '') + '" style="color:#154F4F;">' + dados.telefone + '</a>'
+    : '—';
+
+  const dadosRows = [
+    linha('Nome',              dados.nome),
+    linha('Cargo',             dados.cargo),
+    linha('Organização',       dados.organizacao),
+    linha('E-mail',            '<a href="mailto:' + dados.email + '" style="color:#154F4F;">' + dados.email + '</a>'),
+    linha('Telefone/WhatsApp', telefoneLink),
+    linha('Consentimento',     dados.consentimento ? '✓ Autorizou contato' : 'Não autorizou'),
+  ].join('');
 
   const blocos = [
     { label: 'Comunicação e Governança',  score: bloco1, max: 12 },
@@ -217,75 +237,62 @@ async function enviarNotificacaoInterna(form, perfil) {
     { label: 'Públicos, Canais e Riscos',  score: bloco5, max: 20 },
   ];
 
-  const blocosRows = blocos.map(b => {
+  const blocosRows = blocos.map(function(b) {
     const pct = Math.round((Number(b.score) / b.max) * 100);
-    return `
-    <tr>
-      <td style="padding:8px 12px;font-size:13px;font-weight:600;color:#444;background:#f9f9f9;width:38%;border-bottom:1px solid #eee;">${b.label}</td>
-      <td style="padding:8px 12px;font-size:13px;color:#154F4F;font-weight:700;background:#fff;border-bottom:1px solid #eee;">${b.score}/${b.max} <span style="color:#999;font-weight:400;">(${pct}%)</span></td>
-    </tr>`;
+    return '<tr>'
+      + '<td style="padding:8px 12px;font-size:13px;font-weight:600;color:#444;background:#f9f9f9;width:38%;border-bottom:1px solid #eee;">' + b.label + '</td>'
+      + '<td style="padding:8px 12px;font-size:13px;color:#154F4F;font-weight:700;background:#fff;border-bottom:1px solid #eee;">' + b.score + '/' + b.max + ' <span style="color:#999;font-weight:400;">(' + pct + '%)</span></td>'
+      + '</tr>';
   }).join('');
 
-  const html = `<!DOCTYPE html>
-<html lang="pt-BR">
-<head><meta charset="UTF-8"><title>Novo Diagnóstico Express</title></head>
-<body style="margin:0;padding:0;background:#f4f4f2;font-family:'Helvetica Neue',Arial,sans-serif;">
-<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f4f4f2;">
-<tr><td align="center" style="padding:32px 16px;">
-<table width="640" cellpadding="0" cellspacing="0" border="0" style="max-width:640px;width:100%;background:#fff;border-radius:4px;overflow:hidden;border:1px solid #e0e0e0;">
+  const respostasRows = Object.entries(PERGUNTAS).map(function(entry) {
+    return linha(entry[1], respostas[entry[0]] || '—');
+  }).join('');
 
-  <!-- Header -->
-  <tr><td style="background:#154F4F;padding:24px 32px;">
-    <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
-      <td>
-        <p style="margin:0;color:#fff;font-size:18px;font-weight:700;">Novo Diagnóstico Express</p>
-        <p style="margin:4px 0 0;color:rgba(255,255,255,0.5);font-size:12px;">Recebido em ${agora}</p>
-      </td>
-      <td align="right">
-        <div style="background:#FF6517;border-radius:3px;padding:6px 14px;display:inline-block;">
-          <p style="margin:0;color:#fff;font-size:11px;font-weight:700;">${perfil}</p>
-          <p style="margin:2px 0 0;color:rgba(255,255,255,0.8);font-size:20px;font-weight:700;line-height:1;">${total}<span style="font-size:11px;font-weight:400;">/68</span></p>
-        </div>
-      </td>
-    </tr></table>
-  </td></tr>
+  const html = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>Novo Diagnostico</title></head>'
+    + '<body style="margin:0;padding:0;background:#f4f4f2;font-family:Arial,sans-serif;">'
+    + '<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f4f4f2;">'
+    + '<tr><td align="center" style="padding:32px 16px;">'
+    + '<table width="640" cellpadding="0" cellspacing="0" border="0" style="max-width:640px;width:100%;background:#fff;border-radius:4px;border:1px solid #e0e0e0;">'
 
-  <!-- Dados do respondente -->
-  <tr><td style="padding:24px 32px 8px;">
-    <p style="margin:0 0 12px;font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#154F4F;">Dados do respondente</p>
-    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border:1px solid #eee;border-radius:4px;overflow:hidden;">
-      ${linha('Nome', dados.nome)}
-      ${linha('Cargo', dados.cargo)}
-      ${linha('Organização', dados.organizacao)}
-      ${linha('E-mail', `<a href="mailto:${dados.email}" style="color:#154F4F;">${dados.email}</a>`)}
-      ${linha('Telefone / WhatsApp', dados.telefone ? `<a href="https://wa.me/55${dados.telefone.replace(/\D/g,'')}" style="color:#154F4F;">${dados.telefone}</a>` : '—')}
-      ${linha('Consentimento', dados.consentimento ? '✓ Autorizou contato' : 'Não autorizou')}
-    </table>
-  </td></tr>
+    // Header
+    + '<tr><td style="background:#154F4F;padding:24px 32px;">'
+    + '<table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>'
+    + '<td><p style="margin:0;color:#fff;font-size:18px;font-weight:700;">Novo Diagnostico Express</p>'
+    + '<p style="margin:4px 0 0;color:rgba(255,255,255,0.5);font-size:12px;">Recebido em ' + agora + '</p></td>'
+    + '<td align="right"><div style="background:#FF6517;border-radius:3px;padding:6px 14px;display:inline-block;">'
+    + '<p style="margin:0;color:#fff;font-size:11px;font-weight:700;">' + perfil + '</p>'
+    + '<p style="margin:2px 0 0;color:#fff;font-size:20px;font-weight:700;">' + total + '/68</p>'
+    + '</div></td>'
+    + '</tr></table></td></tr>'
 
-  <!-- Pontuação por bloco -->
-  <tr><td style="padding:24px 32px 8px;">
-    <p style="margin:0 0 12px;font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#154F4F;">Pontuação por bloco</p>
-    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border:1px solid #eee;border-radius:4px;overflow:hidden;">
-      ${blocosRows}
-    </table>
-  </td></tr>
+    // Dados
+    + '<tr><td style="padding:24px 32px 8px;">'
+    + '<p style="margin:0 0 12px;font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#154F4F;">Dados do respondente</p>'
+    + '<table width="100%" cellpadding="0" cellspacing="0" border="0" style="border:1px solid #eee;border-radius:4px;">'
+    + dadosRows
+    + '</table></td></tr>'
 
-  <!-- Respostas completas -->
-  <tr><td style="padding:24px 32px 32px;">
-    <p style="margin:0 0 12px;font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#154F4F;">Respostas completas</p>
-    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border:1px solid #eee;border-radius:4px;overflow:hidden;">
-      ${respostasRows}
-    </table>
-  </td></tr>
+    // Pontuação por bloco
+    + '<tr><td style="padding:24px 32px 8px;">'
+    + '<p style="margin:0 0 12px;font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#154F4F;">Pontuação por bloco</p>'
+    + '<table width="100%" cellpadding="0" cellspacing="0" border="0" style="border:1px solid #eee;border-radius:4px;">'
+    + blocosRows
+    + '</table></td></tr>'
 
-  <!-- Footer -->
-  <tr><td style="background:#f4f4f2;padding:16px 32px;border-top:1px solid #e0e0e0;">
-    <p style="margin:0;font-size:11px;color:#999;">Alter · Diagnóstico Express — notificação interna automática</p>
-  </td></tr>
+    // Respostas
+    + '<tr><td style="padding:24px 32px 32px;">'
+    + '<p style="margin:0 0 12px;font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#154F4F;">Respostas completas</p>'
+    + '<table width="100%" cellpadding="0" cellspacing="0" border="0" style="border:1px solid #eee;border-radius:4px;">'
+    + respostasRows
+    + '</table></td></tr>'
 
-</table></td></tr></table>
-</body></html>`;
+    // Footer
+    + '<tr><td style="background:#f4f4f2;padding:16px 32px;border-top:1px solid #e0e0e0;">'
+    + '<p style="margin:0;font-size:11px;color:#999;">Alter - Diagnostico Express - notificacao interna automatica</p>'
+    + '</td></tr>'
+
+    + '</table></td></tr></table></body></html>';
 
   const response = await fetch('https://api.resend.com/emails', {
     method: 'POST',
