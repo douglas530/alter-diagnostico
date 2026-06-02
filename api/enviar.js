@@ -64,97 +64,89 @@ function gerarAnalise(form, perfil) {
   return (map[perfil] || analise1)({ primeiroNome, org, total, fraco, forte });
 }
 
-const p = (txt) => `<p style="margin:0 0 16px;font-size:15px;color:#444444;line-height:1.75;">${txt}</p>`;
-const h = (txt) => `<h3 style="margin:28px 0 10px;font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#154F4F;">${txt}</h3>`;
-const b = (txt) => `<strong style="color:#154F4F;">${txt}</strong>`;
+const p   = (txt) => `<p style="margin:0 0 16px;font-size:15px;color:#444;line-height:1.75;">${txt}</p>`;
+const h   = (txt) => `<h3 style="margin:28px 0 10px;font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#154F4F;">${txt}</h3>`;
+const obs = () => `<p style="margin:28px 0 0;font-size:12px;color:#888;line-height:1.65;font-style:italic;border-top:1px solid #eee;padding-top:20px;">Este diagnóstico é uma leitura inicial, construída a partir de respostas objetivas. Ele não substitui uma análise aprofundada da comunicação da organização. A partir de uma conversa com a Alter, é possível qualificar essa leitura, observar materiais reais, entender o contexto institucional e desenhar caminhos mais precisos.</p>`;
 
-function analise1({ primeiroNome, org, total, fraco, forte }) {
+function analise1({ primeiroNome, org }) {
   return [
-    p(`Olá, <strong>${primeiroNome}</strong>.`),
-    p(`O diagnóstico da <strong>${org}</strong> revela algo que muitas organizações vivem, mas poucas assumem com clareza: a comunicação ainda não encontrou seu lugar estratégico. Isso não é um problema de competência — é uma questão de momento e de estrutura.`),
-    h('Leitura do momento'),
-    p(`Com <strong>${total} pontos de 68 possíveis</strong>, a ${org} está na fase de execução: a comunicação entra depois que as coisas acontecem, para registrar e divulgar. É um ponto de partida honesto — e reconhecer isso já é um diferencial importante.`),
-    h('O que os números revelam'),
-    p(`O bloco com maior oportunidade de desenvolvimento é <strong>${fraco}</strong>. Isso significa que a organização provavelmente tem muito mais impacto real do que consegue mostrar. O desafio não é o que se faz — é como se conta.`),
-    h('Três oportunidades concretas'),
-    p(`${b('1. Construir a narrativa central.')} Antes de qualquer canal ou campanha, a ${org} precisa de uma resposta clara: "qual impacto geramos e por quê isso importa?" Uma narrativa validada internamente transforma como tudo é comunicado.`),
-    p(`${b('2. Incluir comunicação no início dos projetos.')} Quando a comunicação entra só no fim, perde a chance de moldar a percepção desde o começo. Mudar esse momento é o que separa organizações que apenas divulgam das que constroem reputação.`),
-    p(`${b('3. Mapear os públicos prioritários.')} Com quem a ${org} precisa falar para avançar nos seus objetivos? Definir isso orienta onde investir energia e recursos.`),
-    h('O que a Alter pode fazer'),
-    p(`Trabalhamos com organizações exatamente neste estágio. Nosso ponto de entrada costuma ser a construção da narrativa estratégica de sustentabilidade — um processo de 4 a 6 semanas que entrega a base de tudo: mensagens, posicionamento e os primeiros conteúdos para ativar essa comunicação.`),
-    p(`Se fizer sentido conversar sobre como isso se aplica à ${org}, estamos disponíveis.`),
+    p(`Olá, <strong>${primeiroNome}</strong>. Este é o diagnóstico de comunicação de sustentabilidade da <strong>${org}</strong>.`),
+    p(`A comunicação de sustentabilidade ainda parece estar em um estágio inicial ou muito operacional. Em geral, organizações nesse perfil tendem a comunicar ações de forma pontual, conforme demandas específicas, campanhas, eventos ou necessidades de divulgação.`),
+    p(`A agenda de impacto pode até existir na prática, mas ainda não aparece organizada como narrativa. Isso faz com que boas iniciativas corram o risco de parecerem isoladas, pouco conectadas entre si ou restritas a entregas específicas.`),
+    p(`Nesse estágio, a comunicação costuma atuar mais como uma etapa final do processo: algo que entra depois que o projeto já foi desenhado, aprovado ou executado. O desafio é fazer com que ela participe mais cedo das decisões, ajudando a definir públicos, linguagem, mensagens, riscos e oportunidades.`),
+    h(`Oportunidades principais`),
+    p(`Há um caminho importante para organizar a base da comunicação de impacto. Isso passa por identificar quais temas de sustentabilidade são realmente prioritários, que públicos precisam ser alcançados, quais mensagens precisam ser consolidadas e quais canais devem ser usados com mais critério.`),
+    p(`Também pode haver oportunidade de traduzir melhor projetos e ações em uma narrativa mais ampla, capaz de explicar por que aquelas iniciativas importam, que impacto geram e como se conectam à estratégia da organização.`),
+    h(`Caminhos possíveis com a Alter`),
+    p(`A Alter pode apoiar a construção de uma narrativa-mãe de sustentabilidade, a definição de mensagens essenciais, o mapeamento de públicos prioritários e a criação de um plano básico de comunicação de impacto.`),
+    p(`Também pode ajudar a transformar ações dispersas em uma comunicação mais clara, coerente e compreensível para diferentes públicos.`),
+    obs(),
   ].join('');
 }
 
-function analise2({ primeiroNome, org, total, fraco, forte }) {
+function analise2({ primeiroNome, org }) {
   return [
-    p(`Olá, <strong>${primeiroNome}</strong>.`),
-    p(`A <strong>${org}</strong> já deu um passo importante: existe uma estrutura de comunicação de sustentabilidade funcionando. O diagnóstico mostra, porém, que essa comunicação ainda opera principalmente no modo reativo — respondendo a obrigações e demandas, mais do que construindo algo proativo.`),
-    h('Leitura do momento'),
-    p(`Com <strong>${total} pontos de 68</strong>, a organização está no estágio de prestação de contas: relatório publicado, informações disponíveis, mas ainda pouco ativadas. O que foi produzido cumpre um papel, mas poderia trabalhar muito mais — como ativo de reputação e ferramenta de posicionamento.`),
-    h('O que os números revelam'),
-    p(`O principal gap identificado está em <strong>${fraco}</strong>. A ${org} provavelmente tem dados e conteúdo de qualidade — o que falta é transformá-los em mensagens que realmente movem percepções e diferenciam a organização.`),
-    h('Três oportunidades concretas'),
-    p(`${b('1. Ativar o que já foi produzido.')} O relatório de sustentabilidade e os dados existentes são matéria-prima subutilizada. Um plano de conteúdo ancorado nesses materiais pode gerar meses de comunicação relevante sem precisar criar do zero.`),
-    p(`${b('2. Conectar sustentabilidade à visão de futuro.')} Investidores, parceiros estratégicos e imprensa especializada querem entender não apenas o que foi feito, mas para onde a organização está indo. Essa conexão ainda está em desenvolvimento.`),
-    p(`${b('3. Preparar porta-vozes.')} Com mensagens claras e repertório preparado, lideranças se tornam multiplicadores — e isso muda o alcance da comunicação de forma significativa.`),
-    h('O que a Alter pode fazer'),
-    p(`Nosso trabalho nesse estágio envolve a criação de um Guia de Narrativa de Sustentabilidade e um plano de conteúdo para os 12 meses seguintes — estruturando a comunicação para que ela deixe de ser esforço pontual e vire ativo permanente.`),
-    p(`Se quiser entender como aplicar isso à realidade da ${org}, podemos marcar uma conversa.`),
+    p(`Olá, <strong>${primeiroNome}</strong>. Este é o diagnóstico de comunicação de sustentabilidade da <strong>${org}</strong>.`),
+    p(`A comunicação de sustentabilidade já apresenta alguma estrutura, mas ainda parece muito associada à lógica de prestação de contas, divulgação de entregas ou resposta a demandas institucionais. Nesse perfil, relatórios, dados, metas ou compromissos podem existir, mas nem sempre são usados como ativos vivos de reputação, relacionamento e posicionamento.`),
+    p(`A organização pode estar comunicando o que faz, mas ainda com pouca força narrativa. Isso significa que há informação disponível, porém nem sempre traduzida em mensagens claras, acessíveis e relevantes para públicos diversos.`),
+    p(`Esse perfil é comum em organizações que já avançaram na formalização da agenda ESG, climática ou de impacto, mas ainda não transformaram esse conteúdo em presença pública consistente ao longo do ano.`),
+    h(`Oportunidades principais`),
+    p(`O principal desafio é sair da comunicação concentrada em documentos, entregas ou momentos específicos e avançar para uma estratégia mais contínua. Relatórios, metas, compromissos e dados podem gerar conteúdos, pautas, apresentações, conversas com públicos estratégicos, artigos, entrevistas, campanhas e posicionamentos.`),
+    p(`Também há oportunidade de tornar a linguagem menos técnica e mais conectada aos interesses de cada público. O que importa para uma liderança interna pode não ser o mesmo que importa para imprensa, comunidades, investidores, parceiros ou sociedade.`),
+    h(`Caminhos possíveis com a Alter`),
+    p(`A Alter pode apoiar o desdobramento de relatórios, dados e compromissos em narrativas, conteúdos editoriais, mensagens executivas, pautas para imprensa, peças institucionais e materiais para diferentes canais.`),
+    p(`Também pode ajudar a criar uma régua de comunicação ao longo do ano, para que sustentabilidade deixe de aparecer apenas como entrega pontual e passe a sustentar reputação e relacionamento.`),
+    obs(),
   ].join('');
 }
 
-function analise3({ primeiroNome, org, total, fraco, forte }) {
+function analise3({ primeiroNome, org }) {
   return [
-    p(`Olá, <strong>${primeiroNome}</strong>.`),
-    p(`A <strong>${org}</strong> está num momento interessante: a comunicação já saiu do modo reativo e começa a construir algo consistente. Com <strong>${total} pontos</strong>, o diagnóstico mostra uma organização que entende o valor da comunicação de sustentabilidade — e que está no limiar entre comunicar bem e comunicar com estratégia.`),
-    h('Leitura do momento'),
-    p(`O estágio de Reputação é onde mais organizações ficam estagnadas. Há esforço real, há conteúdo de qualidade, mas ainda falta integração: a comunicação ainda não está totalmente conectada à estratégia de negócio, e os diferentes públicos ainda recebem mensagens pouco diferenciadas.`),
-    h('O que os números revelam'),
-    p(`O ponto mais desenvolvido é <strong>${forte}</strong> — uma base sólida. O gap principal está em <strong>${fraco}</strong>, que é onde o próximo salto de maturidade vai acontecer.`),
-    h('Três oportunidades concretas'),
-    p(`${b('1. Elevar a comunicação para dentro da governança.')} O salto para o estágio Estratégia acontece quando a comunicação participa das decisões, não apenas da divulgação. Isso exige clareza sobre quais temas comunicar, com que frequência e com quais evidências.`),
-    p(`${b('2. Trabalhar a diferenciação por público.')} Investidores precisam de uma conversa diferente da imprensa. A comunidade local precisa de uma conversa diferente dos colaboradores. Adaptar mensagens sem perder coerência é uma das capacidades mais valiosas — e ainda em desenvolvimento.`),
-    p(`${b('3. Fortalecer a comunicação de temas sensíveis.')} Organizações neste estágio já estão expostas o suficiente para que a ausência de posicionamento seja notada. Ter mensagens preparadas e porta-vozes treinados é proteção e diferencial ao mesmo tempo.`),
-    h('O que a Alter pode fazer'),
-    p(`Para organizações neste estágio, nosso trabalho mais impactante envolve dois movimentos: mapear os gaps específicos de cada bloco e construir um Plano de Comunicação de Sustentabilidade integrado ao planejamento anual. O resultado é uma comunicação que para de ser esforço isolado e passa a ser parte do que move a organização.`),
-    p(`Se fizer sentido aprofundar essa conversa, estamos à disposição.`),
+    p(`Olá, <strong>${primeiroNome}</strong>. Este é o diagnóstico de comunicação de sustentabilidade da <strong>${org}</strong>.`),
+    p(`A comunicação de sustentabilidade já contribui para fortalecer percepção pública, dar visibilidade a iniciativas relevantes e construir confiança. Nesse perfil, a organização costuma ter mensagens mais claras, algum nível de planejamento, canais ativos e preocupação com posicionamento.`),
+    p(`Ainda assim, a comunicação pode estar em uma zona intermediária: mais madura do que uma simples divulgação operacional, mas ainda sem plena integração à governança, à tomada de decisão e à gestão de temas sensíveis.`),
+    p(`Esse é um estágio importante, porque indica que a organização já percebe valor estratégico na comunicação. O próximo passo é aprofundar consistência, segmentação, evidências e presença qualificada nos espaços certos.`),
+    h(`Oportunidades principais`),
+    p(`O desafio passa a ser qualificar a narrativa e conectar melhor sustentabilidade a temas como clima, impacto social, diversidade, inovação, território, futuro, reputação e valor institucional.`),
+    p(`Também pode haver espaço para fortalecer porta-vozes, organizar mensagens por públicos e criar conteúdos mais autorais. A comunicação pode deixar de apenas repercutir iniciativas e passar a ajudar a organização a ocupar conversas relevantes.`),
+    p(`Nesse perfil, a linguagem ganha papel central. Não basta comunicar mais; é preciso comunicar melhor, com clareza, precisão, responsabilidade e densidade.`),
+    h(`Caminhos possíveis com a Alter`),
+    p(`A Alter pode apoiar a construção de territórios de fala, o refinamento da narrativa institucional, a preparação de porta-vozes, a definição de públicos prioritários e a criação de uma estratégia editorial mais robusta.`),
+    p(`Também pode ajudar a transformar temas técnicos ou complexos em conteúdos mais acessíveis, sem perder rigor, profundidade ou credibilidade.`),
+    obs(),
   ].join('');
 }
 
-function analise4({ primeiroNome, org, total, fraco, forte }) {
+function analise4({ primeiroNome, org }) {
   return [
-    p(`Olá, <strong>${primeiroNome}</strong>.`),
-    p(`O diagnóstico da <strong>${org}</strong> revela uma maturidade real. Com <strong>${total} pontos</strong>, a comunicação já opera de forma integrada à estratégia — não é um departamento à parte, mas parte de como a organização se posiciona e avança seus objetivos.`),
-    h('Leitura do momento'),
-    p(`No estágio Estratégia, a comunicação já passou por muitas transformações importantes: existe narrativa clara, há integração com lideranças, e os dados de sustentabilidade são usados ativamente. O desafio agora é de sofisticação — passar de uma comunicação estratégica para uma comunicação de governança.`),
-    h('O que os números revelam'),
-    p(`A área mais desenvolvida é <strong>${forte}</strong>, o que demonstra consistência e maturidade. O refinamento mais relevante está em <strong>${fraco}</strong> — provavelmente o caminho mais direto para o próximo nível.`),
-    h('Três oportunidades concretas'),
-    p(`${b('1. Assumir a liderança pública em temas específicos.')} A ${org} tem credencial para mais do que comunicar — tem credencial para liderar conversas. Escolher 1 ou 2 temas onde há real expertise e posicionar lideranças como referências pode mudar o patamar de influência.`),
-    p(`${b('2. Trabalhar a comunicação de limites e desafios.')} A transparência sobre o que ainda não está resolvido é, paradoxalmente, o que mais constrói credibilidade com públicos sofisticados. Organizações no estágio de Governança comunicam avanços e desafios com o mesmo cuidado.`),
-    p(`${b('3. Integrar comunicação ao processo de decisão.')} Quais decisões de negócio têm implicações de comunicação? Quem é consultado? Como se avalia o impacto reputacional antes de agir? Ter esse protocolo é o que define o estágio de Governança.`),
-    h('O que a Alter pode fazer'),
-    p(`Com organizações neste nível, trabalhamos com projetos de posicionamento público de liderança, frameworks de comunicação para temas sensíveis e materiais de alta complexidade — relatórios integrados, estratégias de influência com públicos-chave e comunicação em situações críticas.`),
-    p(`Se quiser conversar sobre o que faz mais sentido para o próximo ciclo da ${org}, estamos disponíveis.`),
+    p(`Olá, <strong>${primeiroNome}</strong>. Este é o diagnóstico de comunicação de sustentabilidade da <strong>${org}</strong>.`),
+    p(`A organização demonstra um nível relevante de maturidade. A comunicação de sustentabilidade já parece conectada à estratégia, à reputação e ao relacionamento com públicos importantes. Há sinais de narrativa estruturada, uso de canais, preocupação com dados, preparo institucional e maior integração entre áreas.`),
+    p(`Nesse perfil, a comunicação não está restrita à execução. Ela já atua como elemento de posicionamento e pode influenciar a forma como a organização se apresenta, explica seus compromissos e constrói confiança.`),
+    p(`Ainda assim, há caminhos para aprofundar a governança da comunicação. Isso significa criar fluxos mais claros, preparar melhor lideranças, lidar com temas sensíveis com mais consistência, monitorar percepção pública e transformar evidências em influência.`),
+    h(`Oportunidades principais`),
+    p(`O desafio não é apenas estruturar a comunicação, mas ampliar sua capacidade de gerar autoridade, presença pública e legitimidade. Organizações nesse estágio podem avançar na construção de conteúdos proprietários, agendas de influência, relacionamento com imprensa especializada, fóruns estratégicos e narrativas de futuro.`),
+    p(`Também é importante olhar para coerência: a comunicação precisa sustentar uma relação equilibrada entre discurso, prática, dados, limites e desafios. Quanto mais uma organização se posiciona, mais precisa estar preparada para perguntas difíceis.`),
+    h(`Caminhos possíveis com a Alter`),
+    p(`A Alter pode apoiar a evolução da comunicação de impacto para uma lógica mais estratégica, com planejamento editorial, relacionamento qualificado com mídia e stakeholders, preparação de lideranças, gestão de temas sensíveis e produção de conteúdos de autoridade.`),
+    p(`Também pode ajudar a transformar sustentabilidade em uma agenda permanente de reputação, e não apenas em um conjunto de entregas ou mensagens institucionais.`),
+    obs(),
   ].join('');
 }
 
-function analise5({ primeiroNome, org, total, fraco, forte }) {
+function analise5({ primeiroNome, org }) {
   return [
-    p(`Olá, <strong>${primeiroNome}</strong>.`),
-    p(`O diagnóstico da <strong>${org}</strong> confirma o que poucas organizações alcançam: a comunicação de sustentabilidade opera no nível de governança. Com <strong>${total} pontos de 68 possíveis</strong>, estamos falando de uma maturidade que coloca a ${org} num grupo muito seleto.`),
-    h('Leitura do momento'),
-    p(`No estágio de Governança, a comunicação não é mais uma função — é uma capacidade institucional. Ela participa das decisões, influencia públicos estratégicos e é tratada como ativo de longo prazo. O desafio neste patamar é de refinamento contínuo e posicionamento cada vez mais sofisticado.`),
-    h('O que os números revelam'),
-    p(`A consistência em todos os blocos é evidente. O ponto mais forte é <strong>${forte}</strong>. Se há margem de desenvolvimento, ela está em <strong>${fraco}</strong> — provavelmente em aspectos de fronteira como influência em políticas públicas ou antecipação de crises reputacionais.`),
-    h('Três oportunidades concretas'),
-    p(`${b('1. Liderar a construção de padrões do setor.')} A ${org} tem a posição e a credibilidade para influenciar como o setor como um todo se comunica. Associações, fóruns e iniciativas coletivas são espaços onde a organização pode exercer liderança real.`),
-    p(`${b('2. Desenvolver comunicação de influência com poder público.')} Organizações no nível de Governança estão em posição de contribuir para políticas — e isso exige um conjunto diferente de ferramentas e abordagens de comunicação.`),
-    p(`${b('3. Investir em inteligência reputacional.')} Monitorar não apenas menções, mas percepções reais de públicos-chave é o que permite antecipar movimentos e proteger o que foi construído ao longo de anos.`),
-    h('O que a Alter pode fazer'),
-    p(`Para organizações no estágio de Governança, trabalhamos com projetos de alto impacto: estratégias de influência, relatórios integrados de nível internacional, comunicação para tomadores de decisão e suporte em situações críticas.`),
-    p(`Se há um projeto específico que exige esse nível de sofisticação, queremos conhecer. Estamos à disposição.`),
+    p(`Olá, <strong>${primeiroNome}</strong>. Este é o diagnóstico de comunicação de sustentabilidade da <strong>${org}</strong>.`),
+    p(`A comunicação de sustentabilidade já aparece como parte da governança institucional. Organizações nesse perfil tendem a integrar comunicação, liderança, sustentabilidade, áreas técnicas e públicos estratégicos de forma mais consistente.`),
+    p(`A agenda de impacto não é tratada apenas como divulgação, prestação de contas ou reputação. Ela passa a fazer parte da forma como a organização se posiciona, toma decisões, responde a riscos, presta contas, dialoga com a sociedade e constrói confiança.`),
+    p(`Esse é o estágio mais avançado do diagnóstico, mas não significa que a comunicação esteja "resolvida". Significa que há uma base robusta para avançar em influência, autoridade pública, sofisticação narrativa e mensuração de resultados.`),
+    h(`Oportunidades principais`),
+    p(`O principal caminho está em ampliar a capacidade de liderar conversas complexas. Isso pode envolver clima, transição justa, biodiversidade, diversidade, cadeias de valor, territórios, direitos, inovação, desenvolvimento sustentável e futuro.`),
+    p(`Nesse estágio, a comunicação pode se tornar uma plataforma de inteligência institucional: ajuda a ler contexto, antecipar riscos, orientar porta-vozes, qualificar debates e transformar conhecimento em presença pública relevante.`),
+    p(`Também há oportunidade de medir melhor a contribuição da comunicação para confiança, reputação, relacionamento, engajamento e influência.`),
+    h(`Caminhos possíveis com a Alter`),
+    p(`A Alter pode apoiar a organização na construção de uma agenda de autoridade, na criação de produtos de conhecimento, na preparação de porta-vozes, na estratégia de relacionamento com imprensa e formadores de opinião, na facilitação de conversas complexas e na estruturação de métricas mais qualificadas de comunicação de impacto.`),
+    p(`Também pode ajudar a transformar a maturidade já existente em protagonismo público, com mais clareza, consistência e capacidade de mobilização.`),
+    obs(),
   ].join('');
 }
 
