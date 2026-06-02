@@ -4,6 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Diagnóstico Express — Alter</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-N8ZXB22B6Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-N8ZXB22B6Q');
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
@@ -1155,6 +1163,7 @@ function iniciarFormulario() {
   document.getElementById('tela-form').style.display = 'block';
   atualizarSidebar(1);
   window.scrollTo(0, 0);
+  gtag('event', 'form_start', { event_category: 'diagnostico' });
 }
 
 function avancar(blocoSaindo) {
@@ -1597,6 +1606,12 @@ function mostrarResultado(form, perfil, analiseHtml, emailEnviado) {
 
   document.getElementById('btn-whatsapp').href =
     `https://wa.me/${WHATSAPP_NUMERO}?text=${WHATSAPP_MSG}`;
+
+  document.getElementById('btn-whatsapp').addEventListener('click', function() {
+    gtag('event', 'whatsapp_click', { event_category: 'diagnostico', event_label: perfil });
+  }, { once: true });
+
+  gtag('event', 'form_complete', { event_category: 'diagnostico', event_label: perfil });
 
   const tela = document.getElementById('tela-resultado');
   tela.style.display = 'flex';
