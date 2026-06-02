@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/enviar.js": {
+      "maxDuration": 60
+    }
+  }
+}

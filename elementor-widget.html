@@ -1,0 +1,1563 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --verde: #154F4F;
+    --verde-mid: #1a6060;
+    --verde-light: #e8f2f2;
+    --laranja: #FF6517;
+    --laranja-light: #fff3ec;
+    --preto: #0d0d0d;
+    --cinza-escuro: #2a2a2a;
+    --cinza: #666;
+    --cinza-claro: #f4f4f2;
+    --borda: #e0e8e8;
+    --branco: #ffffff;
+    --fonte-sans: 'DM Sans', sans-serif;
+    --fonte-serif: 'DM Serif Display', serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--fonte-sans);
+    background: var(--branco);
+    color: var(--preto);
+    min-height: 100vh;
+  }
+
+  /* ── TELA: CAPA ── */
+  #tela-capa {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--verde);
+    position: relative;
+    overflow: clip;
+  }
+  #tela-capa::before {
+    content: '';
+    position: absolute;
+    top: -120px; right: -120px;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.03);
+    pointer-events: none;
+  }
+  #tela-capa::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -80px;
+    width: 380px; height: 380px;
+    border-radius: 50%;
+    background: rgba(255,101,23,0.08);
+    pointer-events: none;
+  }
+  .capa-inner {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 80px 48px;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+  }
+  .logo-capa {
+    margin-bottom: 56px;
+  }
+  .logo-capa svg { width: 140px; height: auto; }
+  .capa-tag {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--laranja);
+    margin-bottom: 24px;
+  }
+  .capa-titulo {
+    font-family: var(--fonte-serif);
+    font-size: clamp(36px, 5vw, 58px);
+    line-height: 1.1;
+    color: var(--branco);
+    margin-bottom: 28px;
+    max-width: 600px;
+  }
+  .capa-titulo em {
+    font-style: italic;
+    color: var(--laranja);
+  }
+  .capa-subtitulo {
+    font-size: 17px;
+    line-height: 1.65;
+    color: rgba(255,255,255,0.7);
+    max-width: 520px;
+    margin-bottom: 48px;
+    font-weight: 300;
+  }
+  .capa-meta {
+    display: flex;
+    gap: 32px;
+    margin-bottom: 56px;
+  }
+  .capa-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .capa-meta-numero {
+    font-family: var(--fonte-serif);
+    font-size: 28px;
+    color: var(--branco);
+    line-height: 1;
+  }
+  .capa-meta-label {
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+  }
+  .btn-comecar {
+    background: var(--laranja);
+    color: var(--branco);
+    border: none;
+    padding: 18px 48px;
+    font-family: var(--fonte-sans);
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    letter-spacing: 0.02em;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  .btn-comecar:hover { background: #e55710; transform: translateY(-1px); }
+  .btn-comecar:active { transform: translateY(0); }
+
+  /* ── TELA: FORMULÁRIO ── */
+  #tela-form { display: none; }
+  .form-layout {
+    display: flex;
+    min-height: 100vh;
+  }
+  .form-sidebar {
+    width: 280px;
+    flex-shrink: 0;
+    background: var(--verde);
+    padding: 48px 32px;
+    position: sticky;
+    top: 0;
+    height: 100dvh;
+    -webkit-overflow-scrolling: touch;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .sidebar-logo { margin-bottom: 40px; }
+  .sidebar-logo svg { width: 100px; height: auto; }
+  .sidebar-progresso-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 16px;
+  }
+  .sidebar-barra-outer {
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    height: 3px;
+    margin-bottom: 32px;
+    overflow: hidden;
+  }
+  .sidebar-barra-inner {
+    background: var(--laranja);
+    height: 100%;
+    width: 0%;
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+  .sidebar-blocos { flex: 1; }
+  .sidebar-bloco {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 20px;
+    opacity: 0.4;
+    transition: opacity 0.3s;
+  }
+  .sidebar-bloco.ativo { opacity: 1; }
+  .sidebar-bloco.concluido { opacity: 0.6; }
+  .sidebar-bloco-num {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255,255,255,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.5);
+    flex-shrink: 0;
+    margin-top: 1px;
+    transition: all 0.3s;
+  }
+  .sidebar-bloco.ativo .sidebar-bloco-num {
+    background: var(--laranja);
+    border-color: var(--laranja);
+    color: var(--branco);
+  }
+  .sidebar-bloco.concluido .sidebar-bloco-num {
+    background: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.3);
+    color: rgba(255,255,255,0.6);
+  }
+  .sidebar-bloco-texto { font-size: 12px; color: rgba(255,255,255,0.8); line-height: 1.4; font-weight: 400; }
+  .sidebar-bloco-nome { font-weight: 500; color: rgba(255,255,255,0.95); font-size: 13px; }
+  .sidebar-rodape {
+    padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 11px;
+    color: rgba(255,255,255,0.3);
+    line-height: 1.5;
+  }
+
+  .form-main {
+    flex: 1;
+    padding: 64px 64px 80px;
+    max-width: 680px;
+    min-width: 0;
+  }
+  .bloco-form { display: none; animation: fadeIn 0.35s ease; }
+  .bloco-form.ativo { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+  .bloco-header {
+    margin-bottom: 48px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--borda);
+  }
+  .bloco-tag {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--laranja);
+    margin-bottom: 12px;
+  }
+  .bloco-titulo {
+    font-family: var(--fonte-serif);
+    font-size: 28px;
+    line-height: 1.2;
+    color: var(--verde);
+    margin-bottom: 12px;
+  }
+  .bloco-descricao {
+    font-size: 15px;
+    color: var(--cinza);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  .pergunta { margin-bottom: 44px; }
+  .pergunta-label {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--preto);
+    line-height: 1.5;
+    margin-bottom: 16px;
+    display: block;
+  }
+  .pergunta-num {
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    background: var(--verde-light);
+    color: var(--verde);
+    border-radius: 50%;
+    font-size: 10px;
+    font-weight: 700;
+    text-align: center;
+    line-height: 22px;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+
+  /* Opções de rádio */
+  .opcoes-lista { display: flex; flex-direction: column; gap: 8px; }
+  .opcao-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 18px;
+    border: 1.5px solid var(--borda);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .opcao-item:hover {
+    border-color: var(--verde);
+    background: var(--verde-light);
+  }
+  .opcao-item.selecionada {
+    border-color: var(--verde);
+    background: var(--verde-light);
+  }
+  .opcao-item input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0; height: 0;
+  }
+  .opcao-radio-custom {
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--borda);
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+  }
+  .opcao-item.selecionada .opcao-radio-custom {
+    border-color: var(--verde);
+    background: var(--verde);
+  }
+  .opcao-item.selecionada .opcao-radio-custom::after {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: white;
+    border-radius: 50%;
+  }
+  .opcao-texto {
+    font-size: 14px;
+    color: var(--cinza-escuro);
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  /* Checkboxes */
+  .checkbox-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .opcao-check {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border: 1.5px solid var(--borda);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .opcao-check:hover { border-color: var(--verde); background: var(--verde-light); }
+  .opcao-check.marcada { border-color: var(--verde); background: var(--verde-light); }
+  .opcao-check input[type="checkbox"] { position: absolute; opacity: 0; width: 0; height: 0; }
+  .check-custom {
+    width: 16px; height: 16px;
+    border: 2px solid var(--borda);
+    border-radius: 3px;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+  }
+  .opcao-check.marcada .check-custom {
+    background: var(--verde);
+    border-color: var(--verde);
+  }
+  .opcao-check.marcada .check-custom::after {
+    content: '';
+    width: 8px; height: 5px;
+    border-left: 2px solid white;
+    border-bottom: 2px solid white;
+    transform: rotate(-45deg) translateY(-1px);
+    display: block;
+  }
+  .check-label { font-size: 13px; color: var(--cinza-escuro); line-height: 1.4; }
+
+  /* Textarea */
+  .campo-texto {
+    width: 100%;
+    padding: 14px 18px;
+    border: 1.5px solid var(--borda);
+    border-radius: 4px;
+    font-family: var(--fonte-sans);
+    font-size: 14px;
+    color: var(--preto);
+    line-height: 1.5;
+    resize: vertical;
+    transition: border-color 0.15s;
+    min-height: 100px;
+  }
+  .campo-texto:focus { outline: none; border-color: var(--verde); }
+  .campo-char-count { font-size: 11px; color: var(--cinza); text-align: right; margin-top: 6px; }
+
+  /* Campos de dados */
+  .campos-grid { display: grid; gap: 16px; }
+  .campo-grupo { display: flex; flex-direction: column; gap: 6px; }
+  .campo-grupo label { font-size: 13px; font-weight: 500; color: var(--cinza-escuro); }
+  .campo-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1.5px solid var(--borda);
+    border-radius: 4px;
+    font-family: var(--fonte-sans);
+    font-size: 14px;
+    color: var(--preto);
+    transition: border-color 0.15s;
+  }
+  .campo-input:focus { outline: none; border-color: var(--verde); }
+  .campo-input.erro { border-color: #e24b4a; }
+  .campos-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .consentimento {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+    background: var(--verde-light);
+    border-radius: 4px;
+    margin-top: 8px;
+  }
+  .consentimento input[type="checkbox"] { margin-top: 3px; accent-color: var(--verde); width: 16px; height: 16px; flex-shrink: 0; cursor: pointer; }
+  .consentimento label { font-size: 13px; color: var(--cinza-escuro); line-height: 1.5; cursor: pointer; }
+  .consentimento a { color: var(--verde); }
+
+  /* Navegação */
+  .nav-form {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 56px;
+    padding-top: 32px;
+    border-top: 1px solid var(--borda);
+  }
+  .btn-voltar {
+    background: none;
+    border: 1.5px solid var(--borda);
+    color: var(--cinza);
+    padding: 12px 28px;
+    border-radius: 3px;
+    font-family: var(--fonte-sans);
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-voltar:hover { border-color: var(--verde); color: var(--verde); }
+  .btn-avancar {
+    background: var(--verde);
+    color: var(--branco);
+    border: none;
+    padding: 14px 40px;
+    border-radius: 3px;
+    font-family: var(--fonte-sans);
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.12s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  .btn-avancar:hover { background: var(--verde-mid); }
+  .btn-avancar:active { transform: scale(0.98); }
+  .btn-avancar svg { width: 16px; height: 16px; }
+  .btn-enviar {
+    background: var(--laranja);
+    color: var(--branco);
+    border: none;
+    padding: 16px 48px;
+    border-radius: 3px;
+    font-family: var(--fonte-sans);
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .btn-enviar:hover { background: #e55710; }
+  .btn-enviar:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  /* ── TELA: PROCESSANDO ── */
+  #tela-processando {
+    display: none;
+    min-height: 100vh;
+    background: var(--verde);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px;
+  }
+  .processando-inner { text-align: center; max-width: 480px; }
+  .processando-logo { margin-bottom: 56px; }
+  .processando-logo svg { width: 120px; height: auto; }
+  .spinner {
+    width: 56px;
+    height: 56px;
+    border: 3px solid rgba(255,255,255,0.1);
+    border-top-color: var(--laranja);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 32px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .processando-titulo {
+    font-family: var(--fonte-serif);
+    font-size: 30px;
+    color: var(--branco);
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+  .processando-sub {
+    font-size: 15px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+  .processando-passos {
+    margin-top: 48px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .passo-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    opacity: 0.3;
+    transition: opacity 0.5s;
+  }
+  .passo-item.ativo { opacity: 1; }
+  .passo-item.feito { opacity: 0.6; }
+  .passo-icone {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+  }
+  .passo-item.ativo .passo-icone { background: var(--laranja); color: var(--branco); }
+  .passo-item.feito .passo-icone { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.6); }
+  .passo-texto { font-size: 14px; color: rgba(255,255,255,0.7); }
+
+  /* ── TELA: SUCESSO ── */
+  #tela-sucesso {
+    display: none;
+    min-height: 100vh;
+    background: var(--branco);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px;
+  }
+  .sucesso-inner { max-width: 560px; text-align: center; }
+  .sucesso-icone {
+    width: 72px;
+    height: 72px;
+    background: var(--verde-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 32px;
+  }
+  .sucesso-icone svg { width: 32px; height: 32px; color: var(--verde); }
+  .sucesso-titulo {
+    font-family: var(--fonte-serif);
+    font-size: 36px;
+    color: var(--verde);
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+  .sucesso-sub { font-size: 16px; color: var(--cinza); line-height: 1.6; margin-bottom: 40px; font-weight: 300; }
+  .sucesso-destaque {
+    background: var(--verde-light);
+    border-left: 3px solid var(--laranja);
+    padding: 20px 24px;
+    border-radius: 0 4px 4px 0;
+    text-align: left;
+    margin-bottom: 40px;
+  }
+  .sucesso-destaque p { font-size: 14px; color: var(--cinza-escuro); line-height: 1.6; }
+  .sucesso-logo { margin-top: 8px; }
+  .sucesso-logo svg { width: 100px; height: auto; }
+  .erro-msg { background: #fff0f0; border: 1px solid #f09595; border-radius: 4px; padding: 16px; font-size: 13px; color: #a32d2d; margin-top: 16px; display: none; }
+
+  /* Responsivo */
+  @media (max-width: 768px) {
+    .form-sidebar { display: none; }
+    .form-layout { display: block; }
+    .form-main { padding: 24px 20px 80px; max-width: 100%; }
+    .capa-inner { padding: 48px 24px; }
+    .checkbox-grid { grid-template-columns: 1fr; }
+    .campos-2col { grid-template-columns: 1fr; }
+    .capa-meta { flex-wrap: wrap; gap: 20px; }
+    .nav-form { flex-direction: column-reverse; gap: 12px; }
+    .btn-avancar, .btn-enviar { width: 100%; justify-content: center; padding: 16px 24px; font-size: 16px; }
+    .btn-voltar { width: 100%; text-align: center; padding: 14px 24px; }
+    .opcao-item { padding: 14px 14px; -webkit-tap-highlight-color: transparent; }
+    .opcao-check { -webkit-tap-highlight-color: transparent; }
+    .bloco-titulo { font-size: 22px; }
+    .pergunta-label { font-size: 15px; }
+    .opcao-texto { font-size: 14px; }
+    .bloco-form { padding-bottom: 20px; }
+    /* Aumenta área de toque mínima para iOS */
+    .opcao-item, .opcao-check { min-height: 48px; }
+  }
+</style>
+
+
+<!-- ═══ TELA: CAPA ═══ -->
+<div id="tela-capa">
+  <div class="capa-inner">
+    <div class="logo-capa">
+      <!-- Logo Alter em SVG inline (branco) -->
+      <svg width="140" height="55" viewBox="0 0 437 171" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M368.989 21.5576H388.439C389.129 21.5576 389.848 21.5756 390.59 21.6146C391.279 21.6504 391.946 21.705 392.577 21.7768C395.5 22.1161 398.469 22.907 400.928 24.436C403.023 25.7377 404.744 27.5703 405.752 30.0982C406.145 31.0775 406.414 32.1189 406.588 33.1727C406.786 34.3747 406.864 35.583 406.864 36.7328C406.864 37.7284 406.794 38.6954 406.632 39.6583C406.47 40.6173 406.214 41.5662 405.842 42.5271C404.87 45.0316 403.258 46.9753 401.25 48.3924C399.079 49.9256 396.453 50.8379 393.689 51.1789C393.131 51.1789 392.144 51.3132 391.564 51.3446L390.37 51.3689H349.212C348.083 51.3689 347.054 51.8311 346.311 52.5742C345.567 53.3148 345.105 54.3435 345.105 55.4753V68.8198C345.105 69.9498 345.567 70.9776 346.311 71.721C347.055 72.4649 348.082 72.9273 349.212 72.9273H389.445L412.521 112.655C412.903 113.311 413.414 113.826 414.013 114.17C414.609 114.512 415.31 114.696 416.074 114.696H432.661C433.427 114.696 434.133 114.509 434.733 114.161C435.338 113.811 435.851 113.292 436.227 112.633C436.608 111.964 436.795 111.257 436.792 110.561C436.787 109.866 436.59 109.161 436.203 108.504L411.99 67.3394L412.912 66.7775C413.295 66.5441 413.704 66.2824 414.135 65.9952C414.523 65.741 414.924 65.4617 415.337 65.1625C421.222 60.894 425.298 55.2291 427.571 48.9144C429.956 42.2842 430.362 34.9212 428.796 27.683C427.941 23.729 426.461 20.0321 424.382 16.7217C422.35 13.4884 419.737 10.61 416.568 8.20759C413.586 5.94337 410.301 4.2295 406.839 2.97126C403.009 1.58008 398.959 0.740599 394.855 0.327831C393.755 0.216722 392.675 0.134286 391.619 0.0796874C390.568 0.0259074 389.504 0 388.439 0H349.212C348.082 0 347.055 0.462166 346.311 1.20635C345.567 1.94944 345.105 2.97725 345.105 4.10717V17.4509C345.105 18.5811 345.567 19.6087 346.311 20.352C347.054 21.0951 348.082 21.5576 349.212 21.5576H368.989ZM30.2256 93.3634C36.6356 75.901 43.0474 58.4362 49.472 40.9782L50.5023 38.1786L77.7603 112.015C78.0647 112.839 78.5886 113.512 79.2547 113.975C79.918 114.437 80.7324 114.696 81.6145 114.696H96.9382C97.6433 114.696 98.292 114.541 98.8541 114.246C99.4238 113.95 99.9215 113.504 100.321 112.926C100.716 112.354 100.956 111.73 101.034 111.089C101.111 110.45 101.028 109.787 100.783 109.135L96.2159 97.0543C84.3196 65.5824 72.4205 34.1077 60.4931 2.64776C60.1835 1.83069 59.658 1.16539 58.9971 0.708397C58.3389 0.254134 57.5306 0 56.6513 0H44.4115C43.5322 0 42.723 0.254958 42.0629 0.710313C41.4012 1.16731 40.8757 1.83422 40.567 2.65293C28.8416 33.6897 17.0918 64.7219 5.3465 95.7519L0.280794 109.132C0.034553 109.784 -0.0495216 110.449 0.0277359 111.088C0.106631 111.729 0.346877 112.353 0.742173 112.925C1.14129 113.503 1.63812 113.95 2.2035 114.246C2.76641 114.541 3.41615 114.696 4.12458 114.696H19.5237C20.4109 114.696 21.2269 114.438 21.8878 113.976C22.5515 113.513 23.0761 112.838 23.3813 112.007L30.2256 93.3634ZM186.173 93.2081H136.699V4.10717C136.699 2.97725 136.236 1.94861 135.493 1.20552C134.75 0.462151 133.721 0 132.591 0H117.954C116.824 0 115.796 0.462151 115.053 1.20552C114.309 1.94861 113.847 2.97725 113.847 4.10717V110.589C113.847 111.719 114.309 112.747 115.053 113.491C115.796 114.234 116.824 114.696 117.954 114.696H186.173C187.303 114.696 188.33 114.234 189.075 113.49C189.818 112.747 190.28 111.719 190.28 110.589V97.3156C190.28 96.1854 189.818 95.1578 189.075 94.4145C188.33 93.6703 187.303 93.2081 186.173 93.2081ZM275.651 72.9273H317.255C318.385 72.9273 319.412 72.4649 320.156 71.721C320.9 70.9768 321.362 69.9498 321.362 68.8198V55.5474C321.362 54.4172 320.9 53.3904 320.156 52.6463C319.412 51.9021 318.385 51.4399 317.255 51.4399H274.549V21.5576H324.094C325.227 21.5576 326.254 21.097 326.994 20.3564C327.738 19.6087 328.2 18.5811 328.2 17.4509V4.10717C328.2 2.97725 327.738 1.94861 326.994 1.20552C326.251 0.462151 325.223 0 324.094 0H255.874C254.743 0 253.716 0.462151 252.973 1.20552C252.228 1.94943 251.766 2.97725 251.766 4.10717V110.589C251.766 111.719 252.228 112.746 252.973 113.49C253.717 114.234 254.743 114.696 255.874 114.696H324.094C325.223 114.696 326.251 114.234 326.994 113.491C327.738 112.747 328.2 111.719 328.2 110.589L328.203 97.3145C328.199 96.1846 327.737 95.1568 326.993 94.4137C326.25 93.6703 325.223 93.2081 324.093 93.2081H274.549V72.9273H275.651Z" fill="white"/>
+        <path d="M157.505 21.4871H206.98V110.589C206.98 111.719 207.442 112.747 208.186 113.491C208.929 114.234 209.957 114.696 211.087 114.696H225.725C226.855 114.696 227.882 114.234 228.626 113.49C229.369 112.747 229.832 111.719 229.832 110.589V4.10717C229.832 2.97725 229.369 1.94944 228.626 1.20635C227.882 0.462166 226.855 0 225.725 0H157.505C156.375 0 155.348 0.462151 154.605 1.20552C153.86 1.94943 153.398 2.97725 153.398 4.10717V17.3816C153.398 18.5142 153.859 19.5421 154.599 20.2819C155.347 21.025 156.375 21.4871 157.505 21.4871Z" fill="#FF6517"/>
+      </svg>
+    </div>
+    <div class="capa-tag">Diagnóstico Express</div>
+    <h1 class="capa-titulo">Como sua organização<br><em>comunica impacto?</em></h1>
+    <p class="capa-subtitulo">Em poucos minutos, você descobre o estágio de maturidade da comunicação de sustentabilidade da sua organização — e recebe uma análise personalizada diretamente no seu e-mail.</p>
+    <div class="capa-meta">
+      <div class="capa-meta-item">
+        <span class="capa-meta-numero">19</span>
+        <span class="capa-meta-label">perguntas</span>
+      </div>
+      <div class="capa-meta-item">
+        <span class="capa-meta-numero">~8</span>
+        <span class="capa-meta-label">minutos</span>
+      </div>
+      <div class="capa-meta-item">
+        <span class="capa-meta-numero">5</span>
+        <span class="capa-meta-label">blocos temáticos</span>
+      </div>
+    </div>
+    <button class="btn-comecar" onclick="iniciarFormulario()">Iniciar diagnóstico →</button>
+  </div>
+</div>
+
+<!-- ═══ TELA: FORMULÁRIO ═══ -->
+<div id="tela-form">
+  <div class="form-layout">
+
+    <!-- Sidebar -->
+    <div class="form-sidebar">
+      <div class="sidebar-logo">
+        <svg width="90" height="35" viewBox="0 0 437 171" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M368.989 21.5576H388.439C389.129 21.5576 389.848 21.5756 390.59 21.6146C391.279 21.6504 391.946 21.705 392.577 21.7768C395.5 22.1161 398.469 22.907 400.928 24.436C403.023 25.7377 404.744 27.5703 405.752 30.0982C406.145 31.0775 406.414 32.1189 406.588 33.1727C406.786 34.3747 406.864 35.583 406.864 36.7328C406.864 37.7284 406.794 38.6954 406.632 39.6583C406.47 40.6173 406.214 41.5662 405.842 42.5271C404.87 45.0316 403.258 46.9753 401.25 48.3924C399.079 49.9256 396.453 50.8379 393.689 51.1789C393.131 51.1789 392.144 51.3132 391.564 51.3446L390.37 51.3689H349.212C348.083 51.3689 347.054 51.8311 346.311 52.5742C345.567 53.3148 345.105 54.3435 345.105 55.4753V68.8198C345.105 69.9498 345.567 70.9776 346.311 71.721C347.055 72.4649 348.082 72.9273 349.212 72.9273H389.445L412.521 112.655C412.903 113.311 413.414 113.826 414.013 114.17C414.609 114.512 415.31 114.696 416.074 114.696H432.661C433.427 114.696 434.133 114.509 434.733 114.161C435.338 113.811 435.851 113.292 436.227 112.633C436.608 111.964 436.795 111.257 436.792 110.561C436.787 109.866 436.59 109.161 436.203 108.504L411.99 67.3394L412.912 66.7775C413.295 66.5441 413.704 66.2824 414.135 65.9952C414.523 65.741 414.924 65.4617 415.337 65.1625C421.222 60.894 425.298 55.2291 427.571 48.9144C429.956 42.2842 430.362 34.9212 428.796 27.683C427.941 23.729 426.461 20.0321 424.382 16.7217C422.35 13.4884 419.737 10.61 416.568 8.20759C413.586 5.94337 410.301 4.2295 406.839 2.97126C403.009 1.58008 398.959 0.740599 394.855 0.327831C393.755 0.216722 392.675 0.134286 391.619 0.0796874C390.568 0.0259074 389.504 0 388.439 0H349.212C348.082 0 347.055 0.462166 346.311 1.20635C345.567 1.94944 345.105 2.97725 345.105 4.10717V17.4509C345.105 18.5811 345.567 19.6087 346.311 20.352C347.054 21.0951 348.082 21.5576 349.212 21.5576H368.989ZM30.2256 93.3634C36.6356 75.901 43.0474 58.4362 49.472 40.9782L50.5023 38.1786L77.7603 112.015C78.0647 112.839 78.5886 113.512 79.2547 113.975C79.918 114.437 80.7324 114.696 81.6145 114.696H96.9382C97.6433 114.696 98.292 114.541 98.8541 114.246C99.4238 113.95 99.9215 113.504 100.321 112.926C100.716 112.354 100.956 111.73 101.034 111.089C101.111 110.45 101.028 109.787 100.783 109.135L96.2159 97.0543C84.3196 65.5824 72.4205 34.1077 60.4931 2.64776C60.1835 1.83069 59.658 1.16539 58.9971 0.708397C58.3389 0.254134 57.5306 0 56.6513 0H44.4115C43.5322 0 42.723 0.254958 42.0629 0.710313C41.4012 1.16731 40.8757 1.83422 40.567 2.65293C28.8416 33.6897 17.0918 64.7219 5.3465 95.7519L0.280794 109.132C0.034553 109.784 -0.0495216 110.449 0.0277359 111.088C0.106631 111.729 0.346877 112.353 0.742173 112.925C1.14129 113.503 1.63812 113.95 2.2035 114.246C2.76641 114.541 3.41615 114.696 4.12458 114.696H19.5237C20.4109 114.696 21.2269 114.438 21.8878 113.976C22.5515 113.513 23.0761 112.838 23.3813 112.007L30.2256 93.3634ZM186.173 93.2081H136.699V4.10717C136.699 2.97725 136.236 1.94861 135.493 1.20552C134.75 0.462151 133.721 0 132.591 0H117.954C116.824 0 115.796 0.462151 115.053 1.20552C114.309 1.94861 113.847 2.97725 113.847 4.10717V110.589C113.847 111.719 114.309 112.747 115.053 113.491C115.796 114.234 116.824 114.696 117.954 114.696H186.173C187.303 114.696 188.33 114.234 189.075 113.49C189.818 112.747 190.28 111.719 190.28 110.589V97.3156C190.28 96.1854 189.818 95.1578 189.075 94.4145C188.33 93.6703 187.303 93.2081 186.173 93.2081ZM275.651 72.9273H317.255C318.385 72.9273 319.412 72.4649 320.156 71.721C320.9 70.9768 321.362 69.9498 321.362 68.8198V55.5474C321.362 54.4172 320.9 53.3904 320.156 52.6463C319.412 51.9021 318.385 51.4399 317.255 51.4399H274.549V21.5576H324.094C325.227 21.5576 326.254 21.097 326.994 20.3564C327.738 19.6087 328.2 18.5811 328.2 17.4509V4.10717C328.2 2.97725 327.738 1.94861 326.994 1.20552C326.251 0.462151 325.223 0 324.094 0H255.874C254.743 0 253.716 0.462151 252.973 1.20552C252.228 1.94943 251.766 2.97725 251.766 4.10717V110.589C251.766 111.719 252.228 112.746 252.973 113.49C253.717 114.234 254.743 114.696 255.874 114.696H324.094C325.223 114.696 326.251 114.234 326.994 113.491C327.738 112.747 328.2 111.719 328.2 110.589L328.203 97.3145C328.199 96.1846 327.737 95.1568 326.993 94.4137C326.25 93.6703 325.223 93.2081 324.093 93.2081H274.549V72.9273H275.651Z" fill="white"/>
+          <path d="M157.505 21.4871H206.98V110.589C206.98 111.719 207.442 112.747 208.186 113.491C208.929 114.234 209.957 114.696 211.087 114.696H225.725C226.855 114.696 227.882 114.234 228.626 113.49C229.369 112.747 229.832 111.719 229.832 110.589V4.10717C229.832 2.97725 229.369 1.94944 228.626 1.20635C227.882 0.462166 226.855 0 225.725 0H157.505C156.375 0 155.348 0.462151 154.605 1.20552C153.86 1.94943 153.398 2.97725 153.398 4.10717V17.3816C153.398 18.5142 153.859 19.5421 154.599 20.2819C155.347 21.025 156.375 21.4871 157.505 21.4871Z" fill="#FF6517"/>
+        </svg>
+      </div>
+      <div class="sidebar-progresso-label">Progresso</div>
+      <div class="sidebar-barra-outer"><div class="sidebar-barra-inner" id="barraProgresso"></div></div>
+      <div class="sidebar-blocos">
+        <div class="sidebar-bloco" id="sb1">
+          <div class="sidebar-bloco-num">1</div>
+          <div class="sidebar-bloco-texto"><div class="sidebar-bloco-nome">Comunicação e Governança</div></div>
+        </div>
+        <div class="sidebar-bloco" id="sb2">
+          <div class="sidebar-bloco-num">2</div>
+          <div class="sidebar-bloco-texto"><div class="sidebar-bloco-nome">Narrativa e Posicionamento</div></div>
+        </div>
+        <div class="sidebar-bloco" id="sb3">
+          <div class="sidebar-bloco-num">3</div>
+          <div class="sidebar-bloco-texto"><div class="sidebar-bloco-nome">Transparência e Evidências</div></div>
+        </div>
+        <div class="sidebar-bloco" id="sb4">
+          <div class="sidebar-bloco-num">4</div>
+          <div class="sidebar-bloco-texto"><div class="sidebar-bloco-nome">Impacto Social e DEI</div></div>
+        </div>
+        <div class="sidebar-bloco" id="sb5">
+          <div class="sidebar-bloco-num">5</div>
+          <div class="sidebar-bloco-texto"><div class="sidebar-bloco-nome">Públicos, Canais e Riscos</div></div>
+        </div>
+        <div class="sidebar-bloco" id="sb6">
+          <div class="sidebar-bloco-num">✦</div>
+          <div class="sidebar-bloco-texto"><div class="sidebar-bloco-nome">Seus dados</div></div>
+        </div>
+      </div>
+      <div class="sidebar-rodape">Diagnóstico Express<br>Alter · Conteúdo Relevante</div>
+    </div>
+
+    <!-- Main form -->
+    <div class="form-main">
+      <!-- Barra de progresso mobile (visível só em telas pequenas) -->
+      <div id="progressoMobile" style="display:none; margin-bottom:28px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <span id="progressoLabel" style="font-size:12px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#154F4F;"></span>
+          <span id="progressoPct" style="font-size:12px; color:#999;"></span>
+        </div>
+        <div style="background:#e8f2f2; border-radius:2px; height:4px;">
+          <div id="progressoBarMobile" style="background:#FF6517; height:4px; border-radius:2px; width:0%; transition:width 0.4s ease;"></div>
+        </div>
+      </div>
+      <!-- Mensagem de validação inline -->
+      <div id="validacaoMsg" style="display:none; background:#fff3ec; border:1.5px solid #FF6517; border-radius:4px; padding:14px 16px; margin-bottom:20px; font-size:14px; color:#c04a00;">
+        Por favor, responda todas as perguntas antes de avançar.
+      </div>
+
+      <!-- BLOCO 1 -->
+      <div class="bloco-form ativo" id="bloco1">
+        <div class="bloco-header">
+          <div class="bloco-tag">Bloco 1 de 5</div>
+          <h2 class="bloco-titulo">Comunicação como execução ou governança</h2>
+          <p class="bloco-descricao">Avalia se a comunicação entra apenas no fim do processo, para divulgar, ou se participa da construção estratégica da agenda de sustentabilidade.</p>
+        </div>
+
+        <div class="pergunta">
+          <label class="pergunta-label"><span class="pergunta-num">1</span> Hoje, a comunicação de sustentabilidade da sua organização é mais vista como:</label>
+          <div class="opcoes-lista" id="q1">
+            <label class="opcao-item"><input type="radio" name="q1" value="0"><span class="opcao-radio-custom"></span><span class="opcao-texto">Ainda não há comunicação estruturada sobre sustentabilidade</span></label>
+            <label class="opcao-item"><input type="radio" name="q1" value="1"><span class="opcao-radio-custom"></span><span class="opcao-texto">Divulgação de ações e projetos já realizados</span></label>
+            <label class="opcao-item"><input type="radio" name="q1" value="1b"><span class="opcao-radio-custom"></span><span class="opcao-texto">Apoio a campanhas, eventos e demandas pontuais</span></label>
+            <label class="opcao-item"><input type="radio" name="q1" value="2"><span class="opcao-radio-custom"></span><span class="opcao-texto">Prestação de contas para públicos específicos</span></label>
+            <label class="opcao-item"><input type="radio" name="q1" value="3"><span class="opcao-radio-custom"></span><span class="opcao-texto">Construção de reputação e posicionamento</span></label>
+            <label class="opcao-item"><input type="radio" name="q1" value="4"><span class="opcao-radio-custom"></span><span class="opcao-texto">Parte da estratégia e da governança institucional</span></label>
+          </div>
+        </div>
+
+        <div class="pergunta">
+          <label class="pergunta-label"><span class="pergunta-num">2</span> Em que momento a comunicação entra nas iniciativas de sustentabilidade?</label>
+          <div class="opcoes-lista" id="q2">
+            <label class="opcao-item"><input type="radio" name="q2" value="0"><span class="opcao-radio-custom"></span><span class="opcao-texto">Não há processo definido</span></label>
+            <label class="opcao-item"><input type="radio" name="q2" value="1"><span class="opcao-radio-custom"></span><span class="opcao-texto">Depois que as ações estão prontas, para divulgar</span></label>
+            <label class="opcao-item"><input type="radio" name="q2" value="2"><span class="opcao-radio-custom"></span><span class="opcao-texto">Durante a execução, para apoiar materiais, posts ou campanhas</span></label>
+            <label class="opcao-item"><input type="radio" name="q2" value="3"><span class="opcao-radio-custom"></span><span class="opcao-texto">No planejamento, para ajudar a definir públicos e mensagens</span></label>
+            <label class="opcao-item"><input type="radio" name="q2" value="4"><span class="opcao-radio-custom"></span><span class="opcao-texto">Desde a concepção estratégica, junto com liderança e áreas técnicas</span></label>
+          </div>
+        </div>
+
+        <div class="pergunta">
+          <label class="pergunta-label"><span class="pergunta-num">3</span> Quem participa da definição das mensagens de sustentabilidade?</label>
+          <div class="opcoes-lista" id="q3">
+            <label class="opcao-item"><input type="radio" name="q3" value="0"><span class="opcao-radio-custom"></span><span class="opcao-texto">Não há processo claro</span></label>
+            <label class="opcao-item"><input type="radio" name="q3" value="1"><span class="opcao-radio-custom"></span><span class="opcao-texto">Apenas a comunicação</span></label>
+            <label class="opcao-item"><input type="radio" name="q3" value="2"><span class="opcao-radio-custom"></span><span class="opcao-texto">Comunicação e sustentabilidade</span></label>
+            <label class="opcao-item"><input type="radio" name="q3" value="3"><span class="opcao-radio-custom"></span><span class="opcao-texto">Comunicação, sustentabilidade e liderança executiva</span></label>
+            <label class="opcao-item"><input type="radio" name="q3" value="4"><span class="opcao-radio-custom"></span><span class="opcao-texto">Comunicação, sustentabilidade, liderança e áreas técnicas/negócio/operação</span></label>
+          </div>
+        </div>
+
+        <div class="nav-form">
+          <div></div>
+          <button class="btn-avancar" onclick="avancar(1)">Próximo bloco <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+        </div>
+      </div>
+
+      <!-- BLOCO 2 -->
+      <div class="bloco-form" id="bloco2">
+        <div class="bloco-header">
+          <div class="bloco-tag">Bloco 2 de 5</div>
+          <h2 class="bloco-titulo">Narrativa, clareza e posicionamento</h2>
+          <p class="bloco-descricao">Avalia se a organização consegue explicar de forma clara o impacto que gera, os temas que prioriza e o lugar que deseja ocupar na conversa pública.</p>
+        </div>
+
+        <div class="pergunta">
+          <label class="pergunta-label"><span class="pergunta-num">4</span> Sua organização tem uma narrativa clara sobre sustentabilidade e impacto?</label>
+          <div class="opcoes-lista" id="q4">
+            <label class="opcao-item"><input type="radio" name="q4" value="0"><span class="opcao-radio-custom"></span><span class="opcao-texto">Não temos narrativa definida</span></label>
+            <label class="opcao-item"><input type="radio" name="q4" value="1"><span class="opcao-radio-custom"></span><span class="opcao-texto">Comunicamos conforme a demanda</span></label>
+            <label class="opcao-item"><input type="radio" name="q4" value="2"><span class="opcao-radio-custom"></span><span class="opcao-texto">Temos boas iniciativas, mas comunicadas de forma dispersa</span></label>
+            <label class="opcao-item"><input type="radio" name="q4" value="3"><span class="opcao-radio-custom"></span><span class="opcao-texto">Temos mensagens principais, mas ainda pouco integradas</span></label>
+            <label class="opcao-item"><input type="radio" name="q4" value="4"><span class="opcao-radio-custom"></span><span class="opcao-texto">Sim, validada e usada por diferentes áreas</span></label>
+          </div>
+        </div>
+
+        <div class="pergunta">
+          <label class="pergunta-label"><span class="pergunta-num">5</span> A organização consegue explicar, de forma simples, qual impacto quer gerar?</label>
+          <div class="opcoes-lista" id="q5">
+            <label class="opcao-item"><input type="radio" name="q5" value="0"><span class="opcao-radio-custom"></span><span class="opcao-texto">Não temos clareza sobre essa mensagem</span></label>
+            <label class="opcao-item"><input type="radio" name="q5" value="1"><span class="opcao-radio-custom"></span><span class="opcao-texto">Comunicamos mais projetos do que impacto</span></label>
+            <label class="opcao-item"><input type="radio" name="q5" value="2"><span class="opcao-radio-custom"></span><span class="opcao-texto">Parcialmente; há boas mensagens, mas falta síntese</span></label>
+            <label class="opcao-item"><input type="radio" name="q5" value="3"><span class="opcao-radio-custom"></span><span class="opcao-texto">Sim, mas a explicação varia entre áreas e porta-vozes</span></label>
+            <label class="opcao-item"><input type="radio" name="q5" value="4"><span class="opcao-radio-custom"></span><span class="opcao-texto">Sim, com clareza, evidências e consistência</span></label>
+          </div>
+        </div>
+
+        <div class="pergunta">
+          <label class="pergunta-label"><span class="pergunta-num">6</span> A comunicação conecta sustentabilidade à estratégia de futuro da organização?</label>
+          <div class="opcoes-lista" id="q6">
+            <label class="opcao-item"><input type="radio" name="q6" value="0"><span class="opcao-radio-custom"></span><span class="opcao-texto">Não fazemos essa conexão</span></label>
+            <label class="opcao-item"><input type="radio" name="q6" value="1"><span class="opcao-radio-custom"></span><span class="opcao-texto">Comunicamos sustentabilidade como ação paralela ao negócio</span></label>
+            <label class="opcao-item"><input type="radio" name="q6" value="2"><span class="opcao-radio-custom"></span><span class="opcao-texto">A conexão existe, mas aparece de forma técnica ou fragmentada</span></label>
+            <label class="opcao-item"><input type="radio" name="q6" value="3"><span class="opcao-radio-custom"></span><span class="opcao-texto">Parcialmente; há conexão, mas ainda pouco explorada</span></label>
+            <label class="opcao-item"><input type="radio" name="q6" value="4"><span class="opcao-radio-custom"></span><span class="opcao-texto">Sim, sustentabilidade aparece conectada à visão de futuro e valor</span></label>
+          </div>
+        </div>
+
+        <div class="nav-form">
+          <button class="btn-voltar" onclick="voltar(2)">← Voltar</button>
+          <button class="btn-avancar" onclick="avancar(2)">Próximo bloco <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+        </div>
+      </div>
+
+      <!-- BLOCO 3 -->
+      <div class="bloco-form" id="bloco3">
+        <div class="bloco-header">
+          <div class="bloco-tag">Bloco 3 de 5</div>
+          <h2 class="bloco-titulo">Transparência, relatório, metas e evidências</h2>
+          <p class="bloco-descricao">Avalia se relatório, dados, compromissos e metas são usados apenas como prestação de contas ou como ativos vivos de comunicação e reputação.</p>
+        </div>
+
+        <div class="pergunta">
+          <label class="pergunta-label"><span class="pergunta-num">7</span> Sua organização publica relatório de sustentabilidade ou documento de prestação de contas?</label>
+          <div class="opcoes-lista" id="q7">
+            <label class="opcao-item"><input type="radio" name="q7" value="0"><span class="opcao-radio-custom"></span><span class="opcao-texto">Não publicamos relatório ou documento equivalente</span></label>
+            <label class="opcao-item"><input type="radio" name="q7" value="1"><span class="opcao-radio-custom"></span><span class="opcao-texto">Estamos estruturando esse processo</span></label>
+            <label class="opcao-item"><input type="radio" name="q7" value="2"><span class="opcao-radio-custom"></span><span class="opcao-texto">Sim, mas é tratado principalmente como obrigação de prestação de contas</span></label>
+            <label class="opcao-item"><input type="radio" name="q7" value="3"><span class="opcao-radio-custom"></span><span class="opcao-texto">Sim, mas ele ainda é pouco usado depois da publicação</span></label>
+            <label class="opcao-item"><input type="radio" name="q7" value="4"><span class="opcao-radio-custom"></span><span class="opcao-texto">Sim, e o relatório orienta narrativas, conteúdos e posicionamento ao longo do ano</span></label>
+          </div>
+        </div>
+
+        <div class="pergunta">
+          <label class="pergunta-label"><span class="pergunta-num">8</span> A organização comunica metas, compromissos e avanços de sustentabilidade com clareza?</label>
+          <div class="opcoes-lista" id="q8">
+            <label class="opcao-item"><input type="radio" name="q8" value="0"><span class="opcao-radio-custom"></span><span class="opcao-texto">Não temos metas ou compromissos claramente comunicados</span></label>
+            <label class="opcao-item"><input type="radio" name="q8" value="1"><span class="opcao-radio-custom"></span><span class="opcao-texto">Evitamos comunicar metas por receio de cobrança ou exposição</span></label>
+            <label class="opcao-item"><input type="radio" name="q8" value="2"><span class="opcao-radio-custom"></span><span class="opcao-texto">Comunicamos mais ações do que metas e resultados</span></label>
+            <label class="opcao-item"><input type="radio" name="q8" value="3"><span class="opcao-radio-custom"></span><span class="opcao-texto">Comunicamos metas e avanços, mas ainda com pouca integração narrativa</span></label>
+            <label class="opcao-item"><input type="radio" name="q8" value="4"><span class="opcao-radio-custom"></span><span class="opcao-texto">Sim, com dados, contexto, avanços e desafios</span></label>
+          </div>
+        </div>
+
+        <div class="pergunta">
+          <label class="pergunta-label"><span class="pergunta-num">9</span> Os dados de sustentabilidade são traduzidos para diferentes públicos?</label>
+          <div class="opcoes-lista" id="q9">
+            <label class="opcao-item"><input type="radio" name="q9" value="0"><span class="opcao-radio-custom"></span><span class="opcao-texto">Não temos dados organizados para comunicação</span></label>
+            <label class="opcao-item"><input type="radio" name="q9" value="1"><span class="opcao-radio-custom"></span><span class="opcao-texto">Pouco; os dados ficam restritos a relatórios ou apresentações internas</span></label>
+            <label class="opcao-item"><input type="radio" name="q9" value="2"><span class="opcao-radio-custom"></span><span class="opcao-texto">Parcialmente, dependendo do tema</span></label>
+            <label class="opcao-item"><input type="radio" name="q9" value="3"><span class="opcao-radio-custom"></span><span class="opcao-texto">Sim, mas ainda de forma técnica demais</span></label>
+            <label class="opcao-item"><input type="radio" name="q9" value="4"><span class="opcao-radio-custom"></span><span class="opcao-texto">Sim, com linguagem acessível e formatos adequados</span></label>
+          </div>
+        </div>
+
+        <div class="pergunta">
+          <label class="pergunta-label"><span class="pergunta-num">10</span> A comunicação assume também limites, desafios e aprendizados?</label>
+          <div class="opcoes-lista" id="q10">
+            <label class="opcao-item"><input type="radio" name="q10" value="0"><span class="opcao-radio-custom"></span><span class="opcao-texto">Não há orientação sobre isso</span></label>
+            <label class="opcao-item"><input type="radio" name="q10" value="1"><span class="opcao-radio-custom"></span><span class="opcao-texto">Evitamos falar de limites para não gerar exposição</span></label>
+            <label class="opcao-item"><input type="radio" name="q10" value="2"><span class="opcao-radio-custom"></span><span class="opcao-texto">Raramente; priorizamos mensagens positivas</span></label>
+            <label class="opcao-item"><input type="radio" name="q10" value="3"><span class="opcao-radio-custom"></span><span class="opcao-texto">Às vezes, mas ainda de forma cautelosa</span></label>
+            <label class="opcao-item"><input type="radio" name="q10" value="4"><span class="opcao-radio-custom"></span><span class="opcao-texto">Sim, comunicamos avanços, desafios e próximos passos com equilíbrio</span></label>
+          </div>
+        </div>
+
+        <div class="nav-form">
+          <button class="btn-voltar" onclick="voltar(3)">← Voltar</button>
+          <button class="btn-avancar" onclick="avancar(3)">Próximo bloco <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+        </div>
+      </div>
+
+      <!-- BLOCO 4 -->
+      <div class="bloco-form" id="bloco4">
+        <div class="bloco-header">
+          <div class="bloco-tag">Bloco 4 de 5</div>
+          <h2 class="bloco-titulo">Impacto social, diversidade e coerência</h2>
+          <p class="bloco-descricao">Avalia se diversidade, inclusão, comunidades, direitos e impacto social aparecem como parte da narrativa ou apenas como ações pontuais.</p>
+        </div>
+
+        <div class="pergunta">
+          <label class="pergunta-label"><span class="pergunta-num">11</span> Como sua organização comunica diversidade, equidade e inclusão?</label>
+          <div class="opcoes-lista" id="q11">
+            <label class="opcao-item"><input type="radio" name="q11" value="0"><span class="opcao-radio-custom"></span><span class="opcao-texto">Ainda não comunicamos esse tema de forma estruturada / não se aplica</span></label>
+            <label class="opcao-item"><input type="radio" name="q11" value="1"><span class="opcao-radio-custom"></span><span class="opcao-texto">Apenas quando há demanda externa</span></label>
+            <label class="opcao-item"><input type="radio" name="q11" value="2"><span class="opcao-radio-custom"></span><span class="opcao-texto">Em campanhas pontuais ou datas específicas</span></label>
+            <label class="opcao-item"><input type="radio" name="q11" value="3"><span class="opcao-radio-custom"></span><span class="opcao-texto">Como compromisso público, com dados e ações acompanháveis</span></label>
+            <label class="opcao-item"><input type="radio" name="q11" value="4"><span class="opcao-radio-custom"></span><span class="opcao-texto">Como parte da estratégia institucional e da cultura organizacional</span></label>
+          </div>
+        </div>
+
+        <div class="pergunta">
+          <label class="pergunta-label"><span class="pergunta-num">12</span> Os temas sociais aparecem conectados à agenda de sustentabilidade?</label>
+          <div class="opcoes-lista" id="q12">
+            <label class="opcao-item"><input type="radio" name="q12" value="0"><span class="opcao-radio-custom"></span><span class="opcao-texto">Não há conexão clara entre sustentabilidade e impacto social</span></label>
+            <label class="opcao-item"><input type="radio" name="q12" value="1"><span class="opcao-radio-custom"></span><span class="opcao-texto">Aparecem apenas em campanhas ou datas</span></label>
+            <label class="opcao-item"><input type="radio" name="q12" value="2"><span class="opcao-radio-custom"></span><span class="opcao-texto">Aparecem em projetos específicos</span></label>
+            <label class="opcao-item"><input type="radio" name="q12" value="3"><span class="opcao-radio-custom"></span><span class="opcao-texto">Sim, mas ainda com pouca integração com clima, governança ou estratégia</span></label>
+            <label class="opcao-item"><input type="radio" name="q12" value="4"><span class="opcao-radio-custom"></span><span class="opcao-texto">Sim, como parte da visão de impacto e desenvolvimento sustentável</span></label>
+          </div>
+        </div>
+
+        <div class="nav-form">
+          <button class="btn-voltar" onclick="voltar(4)">← Voltar</button>
+          <button class="btn-avancar" onclick="avancar(4)">Próximo bloco <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+        </div>
+      </div>
+
+      <!-- BLOCO 5 -->
+      <div class="bloco-form" id="bloco5">
+        <div class="bloco-header">
+          <div class="bloco-tag">Bloco 5 de 5</div>
+          <h2 class="bloco-titulo">Públicos, canais, riscos e influência</h2>
+          <p class="bloco-descricao">Avalia se a organização fala com os públicos certos, usa canais adequados e está preparada para temas sensíveis e risco reputacional.</p>
+        </div>
+
+        <div class="pergunta">
+          <label class="pergunta-label"><span class="pergunta-num">13</span> A comunicação de sustentabilidade é adaptada para diferentes públicos?</label>
+          <div class="opcoes-lista" id="q13">
+            <label class="opcao-item"><input type="radio" name="q13" value="0"><span class="opcao-radio-custom"></span><span class="opcao-texto">Não temos clareza sobre públicos prioritários</span></label>
+            <label class="opcao-item"><input type="radio" name="q13" value="1"><span class="opcao-radio-custom"></span><span class="opcao-texto">Comunicamos principalmente para público interno</span></label>
+            <label class="opcao-item"><input type="radio" name="q13" value="2"><span class="opcao-radio-custom"></span><span class="opcao-texto">Comunicamos de forma ampla, sem muita segmentação</span></label>
+            <label class="opcao-item"><input type="radio" name="q13" value="3"><span class="opcao-radio-custom"></span><span class="opcao-texto">Parcialmente, para alguns públicos estratégicos</span></label>
+            <label class="opcao-item"><input type="radio" name="q13" value="4"><span class="opcao-radio-custom"></span><span class="opcao-texto">Sim, com mensagens e canais por público prioritário</span></label>
+          </div>
+        </div>
+
+        <div class="pergunta">
+          <label class="pergunta-label"><span class="pergunta-num">14</span> Quais públicos sua organização considera ao comunicar sustentabilidade? <small style="color:#999;font-weight:400">(múltipla escolha)</small></label>
+          <div class="checkbox-grid" id="q14">
+            <label class="opcao-check"><input type="checkbox" name="q14" value="1"><span class="check-custom"></span><span class="check-label">Lideranças internas</span></label>
+            <label class="opcao-check"><input type="checkbox" name="q14" value="1"><span class="check-custom"></span><span class="check-label">Colaboradores</span></label>
+            <label class="opcao-check"><input type="checkbox" name="q14" value="1"><span class="check-custom"></span><span class="check-label">Clientes / beneficiários</span></label>
+            <label class="opcao-check"><input type="checkbox" name="q14" value="1"><span class="check-custom"></span><span class="check-label">Investidores / financiadores</span></label>
+            <label class="opcao-check"><input type="checkbox" name="q14" value="1"><span class="check-custom"></span><span class="check-label">Comunidades e territórios</span></label>
+            <label class="opcao-check"><input type="checkbox" name="q14" value="1"><span class="check-custom"></span><span class="check-label">Imprensa</span></label>
+            <label class="opcao-check"><input type="checkbox" name="q14" value="1"><span class="check-custom"></span><span class="check-label">Poder público</span></label>
+            <label class="opcao-check"><input type="checkbox" name="q14" value="1"><span class="check-custom"></span><span class="check-label">Parceiros institucionais</span></label>
+            <label class="opcao-check"><input type="checkbox" name="q14" value="1"><span class="check-custom"></span><span class="check-label">Academia / especialistas</span></label>
+            <label class="opcao-check"><input type="checkbox" name="q14" value="1"><span class="check-custom"></span><span class="check-label">Sociedade em geral</span></label>
+          </div>
+        </div>
+
+        <div class="pergunta">
+          <label class="pergunta-label"><span class="pergunta-num">15</span> Quais canais sua organização usa para comunicar sustentabilidade? <small style="color:#999;font-weight:400">(múltipla escolha)</small></label>
+          <div class="checkbox-grid" id="q15">
+            <label class="opcao-check"><input type="checkbox" name="q15" value="1"><span class="check-custom"></span><span class="check-label">Site institucional</span></label>
+            <label class="opcao-check"><input type="checkbox" name="q15" value="1"><span class="check-custom"></span><span class="check-label">Redes sociais</span></label>
+            <label class="opcao-check"><input type="checkbox" name="q15" value="1"><span class="check-custom"></span><span class="check-label">LinkedIn de lideranças</span></label>
+            <label class="opcao-check"><input type="checkbox" name="q15" value="1"><span class="check-custom"></span><span class="check-label">Relatórios e publicações</span></label>
+            <label class="opcao-check"><input type="checkbox" name="q15" value="1"><span class="check-custom"></span><span class="check-label">Newsletter</span></label>
+            <label class="opcao-check"><input type="checkbox" name="q15" value="1"><span class="check-custom"></span><span class="check-label">Imprensa</span></label>
+            <label class="opcao-check"><input type="checkbox" name="q15" value="1"><span class="check-custom"></span><span class="check-label">Eventos</span></label>
+            <label class="opcao-check"><input type="checkbox" name="q15" value="1"><span class="check-custom"></span><span class="check-label">Campanhas internas</span></label>
+            <label class="opcao-check"><input type="checkbox" name="q15" value="1"><span class="check-custom"></span><span class="check-label">Materiais comerciais/institucionais</span></label>
+            <label class="opcao-check"><input type="checkbox" name="q15" value="1"><span class="check-custom"></span><span class="check-label">Apresentações executivas</span></label>
+            <label class="opcao-check"><input type="checkbox" name="q15" value="1"><span class="check-custom"></span><span class="check-label">Podcasts / vídeos</span></label>
+            <label class="opcao-check"><input type="checkbox" name="q15" value="1"><span class="check-custom"></span><span class="check-label">Artigos de opinião</span></label>
+          </div>
+        </div>
+
+        <div class="pergunta">
+          <label class="pergunta-label"><span class="pergunta-num">16</span> Como sua organização lida com temas sensíveis? <small style="color:#666;font-weight:400;font-size:12px">(greenwashing, diversidade, comunidades, controvérsias...)</small></label>
+          <div class="opcoes-lista" id="q16">
+            <label class="opcao-item"><input type="radio" name="q16" value="0"><span class="opcao-radio-custom"></span><span class="opcao-texto">Não há orientação sobre temas sensíveis</span></label>
+            <label class="opcao-item"><input type="radio" name="q16" value="1"><span class="opcao-radio-custom"></span><span class="opcao-texto">Evita se posicionar / responde apenas quando há demanda externa</span></label>
+            <label class="opcao-item"><input type="radio" name="q16" value="2"><span class="opcao-radio-custom"></span><span class="opcao-texto">Responde caso a caso, sem diretrizes consolidadas</span></label>
+            <label class="opcao-item"><input type="radio" name="q16" value="3"><span class="opcao-radio-custom"></span><span class="opcao-texto">Tem mensagens preparadas, mas ainda pouco utilizadas</span></label>
+            <label class="opcao-item"><input type="radio" name="q16" value="4"><span class="opcao-radio-custom"></span><span class="opcao-texto">Tem posicionamento, porta-vozes e critérios claros de comunicação</span></label>
+          </div>
+        </div>
+
+        <div class="pergunta">
+          <label class="pergunta-label"><span class="pergunta-num">17</span> Sua organização tem porta-vozes preparados para falar sobre sustentabilidade?</label>
+          <div class="opcoes-lista" id="q17">
+            <label class="opcao-item"><input type="radio" name="q17" value="0"><span class="opcao-radio-custom"></span><span class="opcao-texto">Não há porta-vozes definidos</span></label>
+            <label class="opcao-item"><input type="radio" name="q17" value="1"><span class="opcao-radio-custom"></span><span class="opcao-texto">A comunicação concentra as respostas, sem porta-vozes preparados</span></label>
+            <label class="opcao-item"><input type="radio" name="q17" value="2"><span class="opcao-radio-custom"></span><span class="opcao-texto">Há porta-vozes, mas sem preparo específico</span></label>
+            <label class="opcao-item"><input type="radio" name="q17" value="3"><span class="opcao-radio-custom"></span><span class="opcao-texto">Sim, mas ainda restritos a alguns temas</span></label>
+            <label class="opcao-item"><input type="radio" name="q17" value="4"><span class="opcao-radio-custom"></span><span class="opcao-texto">Sim, com mensagens, dados, repertório e preparo para temas sensíveis</span></label>
+          </div>
+        </div>
+
+        <div class="nav-form">
+          <button class="btn-voltar" onclick="voltar(5)">← Voltar</button>
+          <button class="btn-avancar" onclick="avancar(5)">Quase lá! <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+        </div>
+      </div>
+
+      <!-- BLOCO 6: Perguntas qualitativas + dados -->
+      <div class="bloco-form" id="bloco6">
+        <div class="bloco-header">
+          <div class="bloco-tag">Últimas perguntas</div>
+          <h2 class="bloco-titulo">Contexto e seus dados</h2>
+          <p class="bloco-descricao">Duas perguntas para qualificar sua análise — e onde enviar o diagnóstico completo.</p>
+        </div>
+
+        <div class="pergunta">
+          <label class="pergunta-label"><span class="pergunta-num">18</span> Qual é o principal desafio hoje? <small style="color:#999;font-weight:400">(pode marcar mais de um)</small></label>
+          <div class="checkbox-grid" id="q18">
+            <label class="opcao-check"><input type="checkbox" name="q18"><span class="check-custom"></span><span class="check-label">Dar mais visibilidade ao que já fazemos</span></label>
+            <label class="opcao-check"><input type="checkbox" name="q18"><span class="check-custom"></span><span class="check-label">Organizar melhor a narrativa</span></label>
+            <label class="opcao-check"><input type="checkbox" name="q18"><span class="check-custom"></span><span class="check-label">Traduzir temas técnicos em linguagem clara</span></label>
+            <label class="opcao-check"><input type="checkbox" name="q18"><span class="check-custom"></span><span class="check-label">Usar melhor o relatório de sustentabilidade</span></label>
+            <label class="opcao-check"><input type="checkbox" name="q18"><span class="check-custom"></span><span class="check-label">Comunicar metas, dados e resultados</span></label>
+            <label class="opcao-check"><input type="checkbox" name="q18"><span class="check-custom"></span><span class="check-label">Evitar riscos de greenwashing</span></label>
+            <label class="opcao-check"><input type="checkbox" name="q18"><span class="check-custom"></span><span class="check-label">Engajar lideranças e áreas internas</span></label>
+            <label class="opcao-check"><input type="checkbox" name="q18"><span class="check-custom"></span><span class="check-label">Dialogar melhor com públicos externos</span></label>
+            <label class="opcao-check"><input type="checkbox" name="q18"><span class="check-custom"></span><span class="check-label">Ganhar autoridade pública em sustentabilidade</span></label>
+            <label class="opcao-check"><input type="checkbox" name="q18"><span class="check-custom"></span><span class="check-label">Medir resultados da comunicação</span></label>
+          </div>
+        </div>
+
+        <div class="pergunta">
+          <label class="pergunta-label"><span class="pergunta-num">19</span> Em uma frase, como sua organização comunica hoje sua agenda de sustentabilidade?</label>
+          <textarea class="campo-texto" id="q19" maxlength="300" placeholder="Descreva em até 300 caracteres..." oninput="contarChars(this, 'count19')"></textarea>
+          <div class="campo-char-count"><span id="count19">0</span>/300 caracteres</div>
+        </div>
+
+        <div style="margin-bottom:44px">
+          <div class="bloco-tag" style="margin-bottom:16px">Seus dados</div>
+          <div class="campos-grid">
+            <div class="campos-2col">
+              <div class="campo-grupo">
+                <label for="nome">Nome *</label>
+                <input type="text" class="campo-input" id="nome" placeholder="Seu nome completo">
+              </div>
+              <div class="campo-grupo">
+                <label for="cargo">Cargo *</label>
+                <input type="text" class="campo-input" id="cargo" placeholder="Seu cargo">
+              </div>
+            </div>
+            <div class="campo-grupo">
+              <label for="organizacao">Organização *</label>
+              <input type="text" class="campo-input" id="organizacao" placeholder="Nome da sua organização">
+            </div>
+            <div class="campo-grupo">
+              <label for="email">E-mail *</label>
+              <input type="email" class="campo-input" id="email" placeholder="seu@email.com.br">
+            </div>
+            <div class="campo-grupo">
+              <label for="telefone">Telefone / WhatsApp <small style="color:#999;font-weight:400">(opcional)</small></label>
+              <input type="tel" class="campo-input" id="telefone" placeholder="(11) 99999-9999">
+            </div>
+            <div class="consentimento">
+              <input type="checkbox" id="consentimento">
+              <label for="consentimento">Autorizo a Alter a entrar em contato a partir deste diagnóstico para apresentar caminhos de apoio à comunicação de impacto da minha organização.</label>
+            </div>
+          </div>
+          <div class="erro-msg" id="erroMsg">Por favor, preencha todos os campos obrigatórios (nome, cargo, organização e e-mail) e marque o consentimento.</div>
+        </div>
+
+        <div class="nav-form">
+          <button class="btn-voltar" onclick="voltar(6)">← Voltar</button>
+          <button class="btn-enviar" id="btnEnviar" onclick="enviarFormulario()">
+            Receber meu diagnóstico
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2L15 22 11 13 2 9l20-7z"/></svg>
+          </button>
+        </div>
+      </div>
+
+    </div><!-- /form-main -->
+  </div><!-- /form-layout -->
+</div><!-- /tela-form -->
+
+<!-- ═══ TELA: PROCESSANDO ═══ -->
+<div id="tela-processando">
+  <div class="processando-inner">
+    <div class="processando-logo">
+      <svg width="120" height="47" viewBox="0 0 437 171" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M368.989 21.5576H388.439C389.129 21.5576 389.848 21.5756 390.59 21.6146C391.279 21.6504 391.946 21.705 392.577 21.7768C395.5 22.1161 398.469 22.907 400.928 24.436C403.023 25.7377 404.744 27.5703 405.752 30.0982C406.145 31.0775 406.414 32.1189 406.588 33.1727C406.786 34.3747 406.864 35.583 406.864 36.7328C406.864 37.7284 406.794 38.6954 406.632 39.6583C406.47 40.6173 406.214 41.5662 405.842 42.5271C404.87 45.0316 403.258 46.9753 401.25 48.3924C399.079 49.9256 396.453 50.8379 393.689 51.1789C393.131 51.1789 392.144 51.3132 391.564 51.3446L390.37 51.3689H349.212C348.083 51.3689 347.054 51.8311 346.311 52.5742C345.567 53.3148 345.105 54.3435 345.105 55.4753V68.8198C345.105 69.9498 345.567 70.9776 346.311 71.721C347.055 72.4649 348.082 72.9273 349.212 72.9273H389.445L412.521 112.655C412.903 113.311 413.414 113.826 414.013 114.17C414.609 114.512 415.31 114.696 416.074 114.696H432.661C433.427 114.696 434.133 114.509 434.733 114.161C435.338 113.811 435.851 113.292 436.227 112.633C436.608 111.964 436.795 111.257 436.792 110.561C436.787 109.866 436.59 109.161 436.203 108.504L411.99 67.3394L412.912 66.7775C413.295 66.5441 413.704 66.2824 414.135 65.9952C414.523 65.741 414.924 65.4617 415.337 65.1625C421.222 60.894 425.298 55.2291 427.571 48.9144C429.956 42.2842 430.362 34.9212 428.796 27.683C427.941 23.729 426.461 20.0321 424.382 16.7217C422.35 13.4884 419.737 10.61 416.568 8.20759C413.586 5.94337 410.301 4.2295 406.839 2.97126C403.009 1.58008 398.959 0.740599 394.855 0.327831C393.755 0.216722 392.675 0.134286 391.619 0.0796874C390.568 0.0259074 389.504 0 388.439 0H349.212C348.082 0 347.055 0.462166 346.311 1.20635C345.567 1.94944 345.105 2.97725 345.105 4.10717V17.4509C345.105 18.5811 345.567 19.6087 346.311 20.352C347.054 21.0951 348.082 21.5576 349.212 21.5576H368.989ZM30.2256 93.3634C36.6356 75.901 43.0474 58.4362 49.472 40.9782L50.5023 38.1786L77.7603 112.015C78.0647 112.839 78.5886 113.512 79.2547 113.975C79.918 114.437 80.7324 114.696 81.6145 114.696H96.9382C97.6433 114.696 98.292 114.541 98.8541 114.246C99.4238 113.95 99.9215 113.504 100.321 112.926C100.716 112.354 100.956 111.73 101.034 111.089C101.111 110.45 101.028 109.787 100.783 109.135L96.2159 97.0543C84.3196 65.5824 72.4205 34.1077 60.4931 2.64776C60.1835 1.83069 59.658 1.16539 58.9971 0.708397C58.3389 0.254134 57.5306 0 56.6513 0H44.4115C43.5322 0 42.723 0.254958 42.0629 0.710313C41.4012 1.16731 40.8757 1.83422 40.567 2.65293C28.8416 33.6897 17.0918 64.7219 5.3465 95.7519L0.280794 109.132C0.034553 109.784 -0.0495216 110.449 0.0277359 111.088C0.106631 111.729 0.346877 112.353 0.742173 112.925C1.14129 113.503 1.63812 113.95 2.2035 114.246C2.76641 114.541 3.41615 114.696 4.12458 114.696H19.5237C20.4109 114.696 21.2269 114.438 21.8878 113.976C22.5515 113.513 23.0761 112.838 23.3813 112.007L30.2256 93.3634ZM186.173 93.2081H136.699V4.10717C136.699 2.97725 136.236 1.94861 135.493 1.20552C134.75 0.462151 133.721 0 132.591 0H117.954C116.824 0 115.796 0.462151 115.053 1.20552C114.309 1.94861 113.847 2.97725 113.847 4.10717V110.589C113.847 111.719 114.309 112.747 115.053 113.491C115.796 114.234 116.824 114.696 117.954 114.696H186.173C187.303 114.696 188.33 114.234 189.075 113.49C189.818 112.747 190.28 111.719 190.28 110.589V97.3156C190.28 96.1854 189.818 95.1578 189.075 94.4145C188.33 93.6703 187.303 93.2081 186.173 93.2081ZM275.651 72.9273H317.255C318.385 72.9273 319.412 72.4649 320.156 71.721C320.9 70.9768 321.362 69.9498 321.362 68.8198V55.5474C321.362 54.4172 320.9 53.3904 320.156 52.6463C319.412 51.9021 318.385 51.4399 317.255 51.4399H274.549V21.5576H324.094C325.227 21.5576 326.254 21.097 326.994 20.3564C327.738 19.6087 328.2 18.5811 328.2 17.4509V4.10717C328.2 2.97725 327.738 1.94861 326.994 1.20552C326.251 0.462151 325.223 0 324.094 0H255.874C254.743 0 253.716 0.462151 252.973 1.20552C252.228 1.94943 251.766 2.97725 251.766 4.10717V110.589C251.766 111.719 252.228 112.746 252.973 113.49C253.717 114.234 254.743 114.696 255.874 114.696H324.094C325.223 114.696 326.251 114.234 326.994 113.491C327.738 112.747 328.2 111.719 328.2 110.589L328.203 97.3145C328.199 96.1846 327.737 95.1568 326.993 94.4137C326.25 93.6703 325.223 93.2081 324.093 93.2081H274.549V72.9273H275.651Z" fill="white"/>
+        <path d="M157.505 21.4871H206.98V110.589C206.98 111.719 207.442 112.747 208.186 113.491C208.929 114.234 209.957 114.696 211.087 114.696H225.725C226.855 114.696 227.882 114.234 228.626 113.49C229.369 112.747 229.832 111.719 229.832 110.589V4.10717C229.832 2.97725 229.369 1.94944 228.626 1.20635C227.882 0.462166 226.855 0 225.725 0H157.505C156.375 0 155.348 0.462151 154.605 1.20552C153.86 1.94943 153.398 2.97725 153.398 4.10717V17.3816C153.398 18.5142 153.859 19.5421 154.599 20.2819C155.347 21.025 156.375 21.4871 157.505 21.4871Z" fill="#FF6517"/>
+      </svg>
+    </div>
+    <div class="spinner"></div>
+    <h2 class="processando-titulo">Preparando sua análise</h2>
+    <p class="processando-sub">Nossa IA está lendo suas respostas e gerando um diagnóstico personalizado para <strong id="nomeProcessando" style="color:rgba(255,255,255,0.85)"></strong>.</p>
+    <div class="processando-passos">
+      <div class="passo-item" id="p1">
+        <div class="passo-icone">1</div>
+        <span class="passo-texto">Calculando pontuação por bloco temático</span>
+      </div>
+      <div class="passo-item" id="p2">
+        <div class="passo-icone">2</div>
+        <span class="passo-texto">Identificando perfil de maturidade</span>
+      </div>
+      <div class="passo-item" id="p3">
+        <div class="passo-icone">3</div>
+        <span class="passo-texto">Gerando análise customizada com IA</span>
+      </div>
+      <div class="passo-item" id="p4">
+        <div class="passo-icone">4</div>
+        <span class="passo-texto">Enviando diagnóstico por e-mail</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TELA: SUCESSO ═══ -->
+<div id="tela-sucesso">
+  <div class="sucesso-inner">
+    <div class="sucesso-icone">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#154F4F" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+    </div>
+    <h2 class="sucesso-titulo">Diagnóstico enviado!</h2>
+    <p class="sucesso-sub">Verifique seu e-mail — você receberá em instantes a análise completa sobre o estágio de maturidade da comunicação de sustentabilidade da sua organização.</p>
+    <div class="sucesso-destaque">
+      <p>O diagnóstico inclui sua pontuação por bloco, o perfil de maturidade identificado, as principais oportunidades e os caminhos possíveis com a Alter.</p>
+    </div>
+    <div class="sucesso-logo">
+      <svg width="120" height="47" viewBox="0 0 437 171" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M368.989 21.5576H388.439C389.129 21.5576 389.848 21.5756 390.59 21.6146C391.279 21.6504 391.946 21.705 392.577 21.7768C395.5 22.1161 398.469 22.907 400.928 24.436C403.023 25.7377 404.744 27.5703 405.752 30.0982C406.145 31.0775 406.414 32.1189 406.588 33.1727C406.786 34.3747 406.864 35.583 406.864 36.7328C406.864 37.7284 406.794 38.6954 406.632 39.6583C406.47 40.6173 406.214 41.5662 405.842 42.5271C404.87 45.0316 403.258 46.9753 401.25 48.3924C399.079 49.9256 396.453 50.8379 393.689 51.1789C393.131 51.1789 392.144 51.3132 391.564 51.3446L390.37 51.3689H349.212C348.083 51.3689 347.054 51.8311 346.311 52.5742C345.567 53.3148 345.105 54.3435 345.105 55.4753V68.8198C345.105 69.9498 345.567 70.9776 346.311 71.721C347.055 72.4649 348.082 72.9273 349.212 72.9273H389.445L412.521 112.655C412.903 113.311 413.414 113.826 414.013 114.17C414.609 114.512 415.31 114.696 416.074 114.696H432.661C433.427 114.696 434.133 114.509 434.733 114.161C435.338 113.811 435.851 113.292 436.227 112.633C436.608 111.964 436.795 111.257 436.792 110.561C436.787 109.866 436.59 109.161 436.203 108.504L411.99 67.3394L412.912 66.7775C413.295 66.5441 413.704 66.2824 414.135 65.9952C414.523 65.741 414.924 65.4617 415.337 65.1625C421.222 60.894 425.298 55.2291 427.571 48.9144C429.956 42.2842 430.362 34.9212 428.796 27.683C427.941 23.729 426.461 20.0321 424.382 16.7217C422.35 13.4884 419.737 10.61 416.568 8.20759C413.586 5.94337 410.301 4.2295 406.839 2.97126C403.009 1.58008 398.959 0.740599 394.855 0.327831C393.755 0.216722 392.675 0.134286 391.619 0.0796874C390.568 0.0259074 389.504 0 388.439 0H349.212C348.082 0 347.055 0.462166 346.311 1.20635C345.567 1.94944 345.105 2.97725 345.105 4.10717V17.4509C345.105 18.5811 345.567 19.6087 346.311 20.352C347.054 21.0951 348.082 21.5576 349.212 21.5576H368.989ZM30.2256 93.3634C36.6356 75.901 43.0474 58.4362 49.472 40.9782L50.5023 38.1786L77.7603 112.015C78.0647 112.839 78.5886 113.512 79.2547 113.975C79.918 114.437 80.7324 114.696 81.6145 114.696H96.9382C97.6433 114.696 98.292 114.541 98.8541 114.246C99.4238 113.95 99.9215 113.504 100.321 112.926C100.716 112.354 100.956 111.73 101.034 111.089C101.111 110.45 101.028 109.787 100.783 109.135L96.2159 97.0543C84.3196 65.5824 72.4205 34.1077 60.4931 2.64776C60.1835 1.83069 59.658 1.16539 58.9971 0.708397C58.3389 0.254134 57.5306 0 56.6513 0H44.4115C43.5322 0 42.723 0.254958 42.0629 0.710313C41.4012 1.16731 40.8757 1.83422 40.567 2.65293C28.8416 33.6897 17.0918 64.7219 5.3465 95.7519L0.280794 109.132C0.034553 109.784 -0.0495216 110.449 0.0277359 111.088C0.106631 111.729 0.346877 112.353 0.742173 112.925C1.14129 113.503 1.63812 113.95 2.2035 114.246C2.76641 114.541 3.41615 114.696 4.12458 114.696H19.5237C20.4109 114.696 21.2269 114.438 21.8878 113.976C22.5515 113.513 23.0761 112.838 23.3813 112.007L30.2256 93.3634ZM186.173 93.2081H136.699V4.10717C136.699 2.97725 136.236 1.94861 135.493 1.20552C134.75 0.462151 133.721 0 132.591 0H117.954C116.824 0 115.796 0.462151 115.053 1.20552C114.309 1.94861 113.847 2.97725 113.847 4.10717V110.589C113.847 111.719 114.309 112.747 115.053 113.491C115.796 114.234 116.824 114.696 117.954 114.696H186.173C187.303 114.696 188.33 114.234 189.075 113.49C189.818 112.747 190.28 111.719 190.28 110.589V97.3156C190.28 96.1854 189.818 95.1578 189.075 94.4145C188.33 93.6703 187.303 93.2081 186.173 93.2081ZM275.651 72.9273H317.255C318.385 72.9273 319.412 72.4649 320.156 71.721C320.9 70.9768 321.362 69.9498 321.362 68.8198V55.5474C321.362 54.4172 320.9 53.3904 320.156 52.6463C319.412 51.9021 318.385 51.4399 317.255 51.4399H274.549V21.5576H324.094C325.227 21.5576 326.254 21.097 326.994 20.3564C327.738 19.6087 328.2 18.5811 328.2 17.4509V4.10717C328.2 2.97725 327.738 1.94861 326.994 1.20552C326.251 0.462151 325.223 0 324.094 0H255.874C254.743 0 253.716 0.462151 252.973 1.20552C252.228 1.94943 251.766 2.97725 251.766 4.10717V110.589C251.766 111.719 252.228 112.746 252.973 113.49C253.717 114.234 254.743 114.696 255.874 114.696H324.094C325.223 114.696 326.251 114.234 326.994 113.491C327.738 112.747 328.2 111.719 328.2 110.589L328.203 97.3145C328.199 96.1846 327.737 95.1568 326.993 94.4137C326.25 93.6703 325.223 93.2081 324.093 93.2081H274.549V72.9273H275.651Z" fill="#154F4F"/>
+        <path d="M157.505 21.4871H206.98V110.589C206.98 111.719 207.442 112.747 208.186 113.491C208.929 114.234 209.957 114.696 211.087 114.696H225.725C226.855 114.696 227.882 114.234 228.626 113.49C229.369 112.747 229.832 111.719 229.832 110.589V4.10717C229.832 2.97725 229.369 1.94944 228.626 1.20635C227.882 0.462166 226.855 0 225.725 0H157.505C156.375 0 155.348 0.462151 154.605 1.20552C153.86 1.94943 153.398 2.97725 153.398 4.10717V17.3816C153.398 18.5142 153.859 19.5421 154.599 20.2819C155.347 21.025 156.375 21.4871 157.505 21.4871Z" fill="#FF6517"/>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════
+// ESTADO GLOBAL
+// ══════════════════════════════
+let blocoAtual = 1;
+const totalBlocos = 6;
+
+// ══════════════════════════════
+// NAVEGAÇÃO
+// ══════════════════════════════
+function iniciarFormulario() {
+  document.getElementById('tela-capa').style.display = 'none';
+  document.getElementById('tela-form').style.display = 'block';
+  atualizarSidebar(1);
+  window.scrollTo(0, 0);
+}
+
+function avancar(blocoSaindo) {
+  if (!validarBloco(blocoSaindo)) return;
+  const proximo = blocoSaindo + 1;
+  mostrarBloco(proximo);
+}
+
+function voltar(blocoAtualNum) {
+  mostrarBloco(blocoAtualNum - 1);
+}
+
+function mostrarBloco(num) {
+  document.querySelectorAll('.bloco-form').forEach(b => b.classList.remove('ativo'));
+  document.getElementById('bloco' + num).classList.add('ativo');
+  blocoAtual = num;
+  atualizarSidebar(num);
+  // iOS-safe scroll to top
+  try { document.querySelector('.form-main').scrollTop = 0; } catch(e) {}
+  window.scrollTo({ top: 0, behavior: 'instant' });
+  setTimeout(() => { window.scrollTo(0, 0); }, 50);
+}
+
+const nomesBloco = ['', 'Comunicação e Governança', 'Narrativa e Posicionamento', 'Transparência e Evidências', 'Impacto Social e DEI', 'Públicos, Canais e Riscos', 'Seus dados'];
+
+function atualizarSidebar(num) {
+  const pct = Math.round(((num - 1) / totalBlocos) * 100);
+  document.getElementById('barraProgresso').style.width = pct + '%';
+  for (let i = 1; i <= 6; i++) {
+    const sb = document.getElementById('sb' + i);
+    sb.classList.remove('ativo', 'concluido');
+    if (i === num) sb.classList.add('ativo');
+    else if (i < num) sb.classList.add('concluido');
+  }
+  // Atualizar barra mobile
+  const pmEl = document.getElementById('progressoMobile');
+  const pbEl = document.getElementById('progressoBarMobile');
+  const plEl = document.getElementById('progressoLabel');
+  const ppEl = document.getElementById('progressoPct');
+  if (pmEl && window.innerWidth <= 768) {
+    pmEl.style.display = 'block';
+    if (pbEl) pbEl.style.width = pct + '%';
+    if (plEl) plEl.textContent = num <= 5 ? 'Bloco ' + num + ' de 5' : 'Últimas perguntas';
+    if (ppEl) ppEl.textContent = pct + '%';
+  }
+}
+
+// ══════════════════════════════
+// INTERATIVIDADE DAS OPÇÕES
+// ══════════════════════════════
+document.addEventListener('change', function(e) {
+  if (e.target.type === 'radio') {
+    const grupo = e.target.closest('.opcoes-lista');
+    if (!grupo) return;
+    grupo.querySelectorAll('.opcao-item').forEach(i => i.classList.remove('selecionada'));
+    e.target.closest('.opcao-item').classList.add('selecionada');
+  }
+  if (e.target.type === 'checkbox') {
+    const label = e.target.closest('.opcao-check');
+    if (label) label.classList.toggle('marcada', e.target.checked);
+  }
+});
+
+function contarChars(el, countId) {
+  document.getElementById(countId).textContent = el.value.length;
+}
+
+// ══════════════════════════════
+// VALIDAÇÃO
+// ══════════════════════════════
+function validarBloco(num) {
+  const perguntas = {
+    1: ['q1', 'q2', 'q3'],
+    2: ['q4', 'q5', 'q6'],
+    3: ['q7', 'q8', 'q9', 'q10'],
+    4: ['q11', 'q12'],
+    5: ['q13', 'q16', 'q17'],
+    6: []
+  };
+  const obrigatorias = perguntas[num] || [];
+  const msgEl = document.getElementById('validacaoMsg');
+  for (const q of obrigatorias) {
+    if (!document.querySelector(`input[name="${q}"]:checked`)) {
+      if (msgEl) { msgEl.style.display = 'block'; setTimeout(() => { msgEl.style.display = 'none'; }, 4000); }
+      // Scroll para mostrar a mensagem
+      if (msgEl) { msgEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      return false;
+    }
+  }
+  if (msgEl) msgEl.style.display = 'none';
+  return true;
+}
+
+// ══════════════════════════════
+// COLETAR RESPOSTAS
+// ══════════════════════════════
+function coletarRespostas() {
+  function getRadio(name) {
+    const el = document.querySelector(`input[name="${name}"]:checked`);
+    return el ? el.value : null;
+  }
+  function getRadioText(name) {
+    const el = document.querySelector(`input[name="${name}"]:checked`);
+    if (!el) return null;
+    return el.closest('.opcao-item').querySelector('.opcao-texto').textContent.trim();
+  }
+  function getChecks(name) {
+    const els = document.querySelectorAll(`input[name="${name}"]:checked`);
+    return Array.from(els).map(e => e.closest('.opcao-check').querySelector('.check-label').textContent.trim());
+  }
+
+  // Pontuações
+  function toScore(val) {
+    if (!val) return 0;
+    const n = parseFloat(val);
+    return isNaN(n) ? 0 : Math.min(Math.round(n), 4);
+  }
+
+  const q14count = document.querySelectorAll('input[name="q14"]:checked').length;
+  const q15count = document.querySelectorAll('input[name="q15"]:checked').length;
+
+  let scoreQ14 = 0;
+  if (q14count >= 8) scoreQ14 = 4;
+  else if (q14count >= 6) scoreQ14 = 3;
+  else if (q14count >= 4) scoreQ14 = 2;
+  else if (q14count >= 2) scoreQ14 = 1;
+
+  let scoreQ15 = 0;
+  if (q15count >= 8) scoreQ15 = 4;
+  else if (q15count >= 5) scoreQ15 = 3;
+  else if (q15count >= 3) scoreQ15 = 2;
+  else scoreQ15 = 1;
+
+  const scores = {
+    q1: toScore(getRadio('q1')),
+    q2: toScore(getRadio('q2')),
+    q3: toScore(getRadio('q3')),
+    q4: toScore(getRadio('q4')),
+    q5: toScore(getRadio('q5')),
+    q6: toScore(getRadio('q6')),
+    q7: toScore(getRadio('q7')),
+    q8: toScore(getRadio('q8')),
+    q9: toScore(getRadio('q9')),
+    q10: toScore(getRadio('q10')),
+    q11: toScore(getRadio('q11')),
+    q12: toScore(getRadio('q12')),
+    q13: toScore(getRadio('q13')),
+    q14: scoreQ14,
+    q15: scoreQ15,
+    q16: toScore(getRadio('q16')),
+    q17: toScore(getRadio('q17')),
+  };
+
+  const bloco1 = scores.q1 + scores.q2 + scores.q3;
+  const bloco2 = scores.q4 + scores.q5 + scores.q6;
+  const bloco3 = scores.q7 + scores.q8 + scores.q9 + scores.q10;
+  const bloco4 = scores.q11 + scores.q12;
+  const bloco5 = scores.q13 + scores.q14 + scores.q15 + scores.q16 + scores.q17;
+  const total = bloco1 + bloco2 + bloco3 + bloco4 + bloco5;
+
+  return {
+    scores, bloco1, bloco2, bloco3, bloco4, bloco5, total,
+    respostas: {
+      q1: getRadioText('q1'),
+      q2: getRadioText('q2'),
+      q3: getRadioText('q3'),
+      q4: getRadioText('q4'),
+      q5: getRadioText('q5'),
+      q6: getRadioText('q6'),
+      q7: getRadioText('q7'),
+      q8: getRadioText('q8'),
+      q9: getRadioText('q9'),
+      q10: getRadioText('q10'),
+      q11: getRadioText('q11'),
+      q12: getRadioText('q12'),
+      q13: getRadioText('q13'),
+      q14: getChecks('q14').join(', '),
+      q15: getChecks('q15').join(', '),
+      q16: getRadioText('q16'),
+      q17: getRadioText('q17'),
+      q18: getChecks('q18').join(', '),
+      q19: document.getElementById('q19').value,
+    },
+    dados: {
+      nome: document.getElementById('nome').value.trim(),
+      organizacao: document.getElementById('organizacao').value.trim(),
+      cargo: document.getElementById('cargo').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      telefone: document.getElementById('telefone').value.trim(),
+      consentimento: document.getElementById('consentimento').checked
+    }
+  };
+}
+
+// ══════════════════════════════
+// ENVIO
+// ══════════════════════════════
+async function enviarFormulario() {
+  const dados = document.getElementById('nome').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const cargo = document.getElementById('cargo').value.trim();
+  const org = document.getElementById('organizacao').value.trim();
+  const consent = document.getElementById('consentimento').checked;
+  const erroEl = document.getElementById('erroMsg');
+
+  if (!dados || !email || !cargo || !org || !consent) {
+    erroEl.style.display = 'block';
+    return;
+  }
+  erroEl.style.display = 'none';
+
+  const form = coletarRespostas();
+  document.getElementById('nomeProcessando').textContent = form.dados.nome.split(' ')[0];
+
+  // Mostrar tela de processamento
+  document.getElementById('tela-form').style.display = 'none';
+  document.getElementById('tela-processando').style.display = 'flex';
+
+  // Animação dos passos
+  animarPassos();
+
+  try {
+    // Envia tudo para o backend (Claude + Resend + RD Station)
+    await chamarBackend(form);
+
+    // Sucesso
+    setTimeout(() => {
+      document.getElementById('tela-processando').style.display = 'none';
+      document.getElementById('tela-sucesso').style.display = 'flex';
+    }, 1200);
+
+  } catch (err) {
+    console.error('Erro:', err);
+    document.getElementById('tela-processando').style.display = 'none';
+    document.getElementById('tela-form').style.display = 'block';
+    mostrarBloco(6);
+    document.getElementById('erroMsg').textContent = 'Ocorreu um erro ao processar. Por favor, tente novamente em instantes.';
+    document.getElementById('erroMsg').style.display = 'block';
+  }
+}
+
+function animarPassos() {
+  const passos = ['p1','p2','p3','p4'];
+  passos.forEach((id, i) => {
+    setTimeout(() => {
+      document.getElementById(id).classList.add('ativo');
+      if (i > 0) document.getElementById(passos[i-1]).classList.remove('ativo');
+      document.getElementById(passos[i-1] || id).classList.add('feito');
+    }, i * 1800);
+  });
+}
+
+// ══════════════════════════════
+// ANÁLISE VIA CLAUDE API
+// ══════════════════════════════
+function determinarPerfil(total) {
+  if (total <= 13) return 'Comunicação como Execução';
+  if (total <= 27) return 'Comunicação como Prestação de Contas';
+  if (total <= 41) return 'Comunicação como Reputação';
+  if (total <= 55) return 'Comunicação como Estratégia';
+  return 'Comunicação como Governança';
+}
+
+// ══════════════════════════════
+// ENVIO → FUNÇÃO SERVERLESS
+// ══════════════════════════════
+async function chamarBackend(form) {
+  const res = await fetch('/wp-json/alter/v1/enviar', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(form)
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || 'Erro no servidor');
+  }
+  return res.json();
+}
+
+// ══════════════════════════════
+// TEMPLATE DO EMAIL HTML
+// ══════════════════════════════
+function montarEmailHTML(form, analiseHtml, perfilNome) {
+  const barras = [
+    { label: 'Comunicação e Governança', score: form.bloco1, max: 12 },
+    { label: 'Narrativa e Posicionamento', score: form.bloco2, max: 12 },
+    { label: 'Transparência e Evidências', score: form.bloco3, max: 16 },
+    { label: 'Impacto Social e DEI', score: form.bloco4, max: 8 },
+    { label: 'Públicos, Canais e Riscos', score: form.bloco5, max: 20 },
+  ];
+
+  const barrasHTML = barras.map(b => {
+    const pct = Math.round((b.score / b.max) * 100);
+    return `
+      <tr>
+        <td style="padding: 6px 0;">
+          <p style="margin:0 0 5px; font-size:13px; color:#444;">${b.label}</p>
+          <table width="100%" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+              <td style="background:#e8f2f2; border-radius:2px; height:6px; width:100%;">
+                <div style="background:#154F4F; width:${pct}%; height:6px; border-radius:2px;"></div>
+              </td>
+              <td style="width:40px; text-align:right; padding-left:10px; font-size:12px; color:#154F4F; font-weight:600; white-space:nowrap;">${b.score}/${b.max}</td>
+            </tr>
+          </table>
+        </td>
+      </tr>`;
+  }).join('');
+
+  // Logo SVG como texto (base64-safe para email: usamos text path simplificado ou alt text)
+  return `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diagnóstico Express Alter</title>
+</head>
+<body style="margin:0;padding:0;background:#f4f4f2;font-family:'Helvetica Neue',Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f4f4f2;">
+    <tr>
+      <td align="center" style="padding:32px 16px;">
+        <table width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;background:#ffffff;border-radius:4px;overflow:hidden;">
+
+          <!-- HEADER -->
+          <tr>
+            <td style="background:#154F4F;padding:40px 48px 36px;">
+              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td>
+                    <p style="margin:0;color:#ffffff;font-size:24px;font-weight:700;letter-spacing:-0.5px;">ALTER</p>
+                    <p style="margin:4px 0 0;color:rgba(255,255,255,0.55);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;">Conteúdo Relevante</p>
+                  </td>
+                  <td align="right">
+                    <p style="margin:0;color:rgba(255,255,255,0.4);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;">Diagnóstico Express</p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- BADGE PERFIL -->
+          <tr>
+            <td style="background:#154F4F;padding:0 48px 48px;">
+              <table cellpadding="0" cellspacing="0" border="0" style="background:#FF6517;border-radius:3px;">
+                <tr>
+                  <td style="padding:10px 20px;">
+                    <p style="margin:0;color:#ffffff;font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;">Seu perfil</p>
+                    <p style="margin:4px 0 0;color:#ffffff;font-size:18px;font-weight:600;">${perfilNome}</p>
+                  </td>
+                  <td style="padding:10px 20px 10px 8px;border-left:1px solid rgba(255,255,255,0.3);">
+                    <p style="margin:0;color:rgba(255,255,255,0.7);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;">Pontuação total</p>
+                    <p style="margin:4px 0 0;color:#ffffff;font-size:24px;font-weight:700;">${form.total}<span style="font-size:14px;font-weight:400;opacity:0.7;">/68</span></p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- BARRAS POR BLOCO -->
+          <tr>
+            <td style="padding:36px 48px 0;">
+              <p style="margin:0 0 16px;font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#154F4F;">Pontuação por bloco</p>
+              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                ${barrasHTML}
+              </table>
+            </td>
+          </tr>
+
+          <!-- LINHA DIVISÓRIA -->
+          <tr>
+            <td style="padding:32px 48px 0;">
+              <hr style="border:none;border-top:1px solid #e8f2f2;margin:0;">
+            </td>
+          </tr>
+
+          <!-- ANÁLISE GERADA PELA IA -->
+          <tr>
+            <td style="padding:32px 48px 40px;">
+              ${analiseHtml}
+            </td>
+          </tr>
+
+          <!-- CTA -->
+          <tr>
+            <td style="padding:0 48px 48px;">
+              <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td style="background:#154F4F;border-radius:3px;">
+                    <a href="mailto:contato@alter.com.br?subject=Diagnóstico Express — ${encodeURIComponent(form.dados.organizacao)}" style="display:block;padding:14px 32px;color:#ffffff;text-decoration:none;font-size:15px;font-weight:500;">Conversar com a Alter →</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- FOOTER -->
+          <tr>
+            <td style="background:#0d0d0d;padding:32px 48px;">
+              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td>
+                    <p style="margin:0;color:#ffffff;font-size:14px;font-weight:600;">ALTER</p>
+                    <p style="margin:4px 0 8px;color:rgba(255,255,255,0.4);font-size:11px;">Conteúdo Relevante</p>
+                    <p style="margin:0;font-size:11px;color:rgba(255,255,255,0.3);line-height:1.5;">Você recebeu este diagnóstico por ter preenchido o formulário em nosso site. Este email contém uma análise personalizada gerada a partir das suas respostas.</p>
+                  </td>
+                  <td align="right" valign="top">
+                    <p style="margin:0;font-size:11px;color:rgba(255,255,255,0.3);">© ${new Date().getFullYear()} Alter</p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
+}
+</script>
