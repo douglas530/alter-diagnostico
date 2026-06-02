@@ -14,16 +14,21 @@ export default async function handler(req, res) {
   const analiseHtml = gerarAnalise(req.body, perfil);
   const emailHtml = montarEmail(req.body, analiseHtml, perfil);
 
-  let emailEnviado = true;
-  try {
-    await enviarEmail(dados, perfil, emailHtml);
-  } catch (err) {
-    console.error('Erro email:', err);
-    emailEnviado = false;
+  const [emailResult, internoResult] = await Promise.allSettled([
+    enviarEmail(dados, perfil, emailHtml),
+    enviarNotificacaoInterna(req.body, perfil),
+  ]);
+
+  if (emailResult.status === 'rejected') {
+    console.error('[EMAIL PESSOA]', emailResult.reason?.message);
+  }
+  if (internoResult.status === 'rejected') {
+    console.error('[EMAIL INTERNO]', internoResult.reason?.message);
   }
 
+  const emailEnviado = emailResult.status === 'fulfilled';
+
   registrarRD(req.body, perfil).catch(err => console.error('[RD]', err.message));
-  enviarNotificacaoInterna(req.body, perfil).catch(err => console.error('[INTERNO]', err.message));
 
   return res.status(200).json({ ok: true, perfil, analiseHtml, emailEnviado });
 }
