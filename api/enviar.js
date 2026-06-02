@@ -14,17 +14,18 @@ export default async function handler(req, res) {
   const analiseHtml = gerarAnalise(req.body, perfil);
   const emailHtml = montarEmail(req.body, analiseHtml, perfil);
 
-  const [emailResult, internoResult] = await Promise.allSettled([
+  const [emailResult, internoResult, sheetsResult] = await Promise.allSettled([
     enviarEmail(dados, perfil, emailHtml),
     enviarNotificacaoInterna(req.body, perfil),
+    salvarNoSheets(req.body, perfil),
   ]);
 
-  if (emailResult.status === 'rejected') {
+  if (emailResult.status === 'rejected')
     console.error('[EMAIL PESSOA]', emailResult.reason?.message);
-  }
-  if (internoResult.status === 'rejected') {
+  if (internoResult.status === 'rejected')
     console.error('[EMAIL INTERNO]', internoResult.reason?.message);
-  }
+  if (sheetsResult.status === 'rejected')
+    console.error('[SHEETS]', sheetsResult.reason?.message);
 
   const emailEnviado = emailResult.status === 'fulfilled';
 
@@ -348,6 +349,22 @@ async function registrarRD(form, perfil) {
       },
     }),
   });
+}
+
+// ── Salvar no Google Sheets ──────────────────────────────────
+async function salvarNoSheets(form, perfil) {
+  if (!process.env.SHEETS_URL) return;
+  console.log('[SHEETS] Salvando resposta na planilha...');
+  const response = await fetch(process.env.SHEETS_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ ...form, perfil }),
+    redirect: 'follow',
+  });
+  if (!response.ok) {
+    throw new Error('Sheets HTTP ' + response.status);
+  }
+  console.log('[SHEETS] Salvo com sucesso');
 }
 
 // ── HTML do email ────────────────────────────────────────────
