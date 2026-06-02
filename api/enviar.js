@@ -23,6 +23,7 @@ export default async function handler(req, res) {
   }
 
   registrarRD(req.body, perfil).catch(() => {});
+  enviarNotificacaoInterna(req.body, perfil).catch(() => {});
 
   return res.status(200).json({ ok: true, perfil, analiseHtml, emailEnviado });
 }
@@ -177,6 +178,142 @@ async function enviarEmail(dados, perfil, html) {
   }
 }
 
+// ── Notificação interna para a Alter ────────────────────────
+const PERGUNTAS = {
+  q1:  'Como a comunicação de sustentabilidade é vista na organização',
+  q2:  'Em que momento a comunicação entra nas iniciativas',
+  q3:  'Quem define as mensagens de sustentabilidade',
+  q4:  'Narrativa clara sobre sustentabilidade e impacto',
+  q5:  'Clareza sobre o impacto que a organização gera',
+  q6:  'Conexão com a estratégia de futuro',
+  q7:  'Relatório de sustentabilidade',
+  q8:  'Comunicação de metas e compromissos',
+  q9:  'Tradução de dados para diferentes públicos',
+  q10: 'Comunicação de limites e desafios',
+  q11: 'Comunicação de diversidade, equidade e inclusão',
+  q12: 'Temas sociais na agenda de sustentabilidade',
+  q13: 'Adaptação da comunicação por público',
+  q14: 'Públicos considerados (múltipla escolha)',
+  q15: 'Canais utilizados (múltipla escolha)',
+  q16: 'Gestão de temas sensíveis',
+  q17: 'Porta-vozes preparados para falar sobre sustentabilidade',
+  q18: 'Principais desafios apontados (múltipla escolha)',
+  q19: 'Como comunicam hoje — texto livre',
+};
+
+async function enviarNotificacaoInterna(form, perfil) {
+  const { dados, respostas, total, bloco1, bloco2, bloco3, bloco4, bloco5 } = form;
+  const destino = process.env.INTERNAL_EMAIL || 'douglas@alterconteudo.com.br';
+  const agora = new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' });
+
+  const linha = (label, valor) => `
+    <tr>
+      <td style="padding:8px 12px;font-size:13px;font-weight:600;color:#444;background:#f9f9f9;width:38%;vertical-align:top;border-bottom:1px solid #eee;">${label}</td>
+      <td style="padding:8px 12px;font-size:13px;color:#222;background:#fff;vertical-align:top;border-bottom:1px solid #eee;">${valor || '—'}</td>
+    </tr>`;
+
+  const respostasRows = Object.entries(PERGUNTAS).map(([key, pergunta]) => {
+    const resp = respostas?.[key];
+    return linha(pergunta, resp || '—');
+  }).join('');
+
+  const blocos = [
+    { label: 'Comunicação e Governança',  score: bloco1, max: 12 },
+    { label: 'Narrativa e Posicionamento', score: bloco2, max: 12 },
+    { label: 'Transparência e Evidências', score: bloco3, max: 16 },
+    { label: 'Impacto Social e DEI',       score: bloco4, max: 8  },
+    { label: 'Públicos, Canais e Riscos',  score: bloco5, max: 20 },
+  ];
+
+  const blocosRows = blocos.map(b => {
+    const pct = Math.round((Number(b.score) / b.max) * 100);
+    return `
+    <tr>
+      <td style="padding:8px 12px;font-size:13px;font-weight:600;color:#444;background:#f9f9f9;width:38%;border-bottom:1px solid #eee;">${b.label}</td>
+      <td style="padding:8px 12px;font-size:13px;color:#154F4F;font-weight:700;background:#fff;border-bottom:1px solid #eee;">${b.score}/${b.max} <span style="color:#999;font-weight:400;">(${pct}%)</span></td>
+    </tr>`;
+  }).join('');
+
+  const html = `<!DOCTYPE html>
+<html lang="pt-BR">
+<head><meta charset="UTF-8"><title>Novo Diagnóstico Express</title></head>
+<body style="margin:0;padding:0;background:#f4f4f2;font-family:'Helvetica Neue',Arial,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f4f4f2;">
+<tr><td align="center" style="padding:32px 16px;">
+<table width="640" cellpadding="0" cellspacing="0" border="0" style="max-width:640px;width:100%;background:#fff;border-radius:4px;overflow:hidden;border:1px solid #e0e0e0;">
+
+  <!-- Header -->
+  <tr><td style="background:#154F4F;padding:24px 32px;">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+      <td>
+        <p style="margin:0;color:#fff;font-size:18px;font-weight:700;">Novo Diagnóstico Express</p>
+        <p style="margin:4px 0 0;color:rgba(255,255,255,0.5);font-size:12px;">Recebido em ${agora}</p>
+      </td>
+      <td align="right">
+        <div style="background:#FF6517;border-radius:3px;padding:6px 14px;display:inline-block;">
+          <p style="margin:0;color:#fff;font-size:11px;font-weight:700;">${perfil}</p>
+          <p style="margin:2px 0 0;color:rgba(255,255,255,0.8);font-size:20px;font-weight:700;line-height:1;">${total}<span style="font-size:11px;font-weight:400;">/68</span></p>
+        </div>
+      </td>
+    </tr></table>
+  </td></tr>
+
+  <!-- Dados do respondente -->
+  <tr><td style="padding:24px 32px 8px;">
+    <p style="margin:0 0 12px;font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#154F4F;">Dados do respondente</p>
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border:1px solid #eee;border-radius:4px;overflow:hidden;">
+      ${linha('Nome', dados.nome)}
+      ${linha('Cargo', dados.cargo)}
+      ${linha('Organização', dados.organizacao)}
+      ${linha('E-mail', `<a href="mailto:${dados.email}" style="color:#154F4F;">${dados.email}</a>`)}
+      ${linha('Telefone / WhatsApp', dados.telefone ? `<a href="https://wa.me/55${dados.telefone.replace(/\D/g,'')}" style="color:#154F4F;">${dados.telefone}</a>` : '—')}
+      ${linha('Consentimento', dados.consentimento ? '✓ Autorizou contato' : 'Não autorizou')}
+    </table>
+  </td></tr>
+
+  <!-- Pontuação por bloco -->
+  <tr><td style="padding:24px 32px 8px;">
+    <p style="margin:0 0 12px;font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#154F4F;">Pontuação por bloco</p>
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border:1px solid #eee;border-radius:4px;overflow:hidden;">
+      ${blocosRows}
+    </table>
+  </td></tr>
+
+  <!-- Respostas completas -->
+  <tr><td style="padding:24px 32px 32px;">
+    <p style="margin:0 0 12px;font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#154F4F;">Respostas completas</p>
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border:1px solid #eee;border-radius:4px;overflow:hidden;">
+      ${respostasRows}
+    </table>
+  </td></tr>
+
+  <!-- Footer -->
+  <tr><td style="background:#f4f4f2;padding:16px 32px;border-top:1px solid #e0e0e0;">
+    <p style="margin:0;font-size:11px;color:#999;">Alter · Diagnóstico Express — notificação interna automática</p>
+  </td></tr>
+
+</table></td></tr></table>
+</body></html>`;
+
+  const response = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
+    },
+    body: JSON.stringify({
+      from: `Alter Diagnóstico <${process.env.EMAIL_REMETENTE}>`,
+      to: [destino],
+      subject: `[Diagnóstico] ${dados.nome} · ${dados.organizacao} · ${perfil}`,
+      html,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Notificação interna: ${await response.text()}`);
+  }
+}
+
 // ── Registrar no RD Station ──────────────────────────────────
 async function registrarRD(form, perfil) {
   if (!process.env.RD_TOKEN) return;
@@ -215,8 +352,8 @@ function montarEmail(form, analiseHtml, perfil) {
   const ano = new Date().getFullYear();
   const orgEncoded = encodeURIComponent(dados.organizacao);
   // ← substitua pelo número real da Alter (com DDI 55)
-  const waNumero = process.env.WHATSAPP_NUMERO || '55XXXXXXXXXXX';
-  const waMsg = encodeURIComponent('Olá! Acabei de fazer o Diagnóstico Express da Alter e gostaria de conversar sobre um diagnóstico mais aprofundado.');
+  const waNumero = process.env.WHATSAPP_NUMERO || '5521971796860';
+  const waMsg = encodeURIComponent('Oi, gostaria de falar com a equipe da Alter sobre o meu diagnóstico');
 
   const blocos = [
     { label: 'Comunicação e Governança',  score: bloco1, max: 12 },
@@ -262,15 +399,7 @@ function montarEmail(form, analiseHtml, perfil) {
         <p style="margin:0;color:rgba(255,255,255,0.75);font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;">Seu perfil</p>
         <p style="margin:4px 0 0;color:#fff;font-size:17px;font-weight:600;">${perfil}</p>
       </td>
-      <td style="padding:10px 20px;border-left:1px solid rgba(255,255,255,0.3);">
-        <p style="margin:0;color:rgba(255,255,255,0.75);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;">Pontuação total</p>
-        <p style="margin:4px 0 0;color:#fff;font-size:24px;font-weight:700;line-height:1;">${total}<span style="font-size:13px;font-weight:400;opacity:0.6;">/68</span></p>
-      </td>
     </tr></table>
-  </td></tr>
-  <tr><td style="padding:32px 44px 8px;">
-    <p style="margin:0 0 14px;font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#154F4F;">Pontuação por bloco</p>
-    <table width="100%" cellpadding="0" cellspacing="0" border="0">${barras}</table>
   </td></tr>
   <tr><td style="padding:24px 44px 0;"><hr style="border:none;border-top:1px solid #eef2f2;margin:0;"></td></tr>
   <tr><td style="padding:28px 44px 36px;">${analiseHtml}</td></tr>
