@@ -407,10 +407,9 @@ function montarEmail(form, analiseHtml, perfil) {
 <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f4f4f2;">
 <tr><td align="center" style="padding:32px 16px;">
 <table width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;background:#fff;border-radius:4px;overflow:hidden;">
-  <tr><td style="background:#154F4F;padding:36px 44px 32px;">
+  <tr><td style="background:#154F4F;padding:32px 44px 28px;">
     <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
-      <td><p style="margin:0;color:#fff;font-size:22px;font-weight:700;">ALTER</p>
-          <p style="margin:3px 0 0;color:rgba(255,255,255,0.45);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;">Conteúdo Relevante</p></td>
+      <td><img src="https://diagnostico.alterconteudo.com.br/logo-alter.png" alt="Alter" width="120" style="display:block;height:auto;"></td>
       <td align="right"><p style="margin:0;color:rgba(255,255,255,0.35);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;">Diagnóstico Express</p></td>
     </tr></table>
   </td></tr>
@@ -437,8 +436,7 @@ function montarEmail(form, analiseHtml, perfil) {
   <tr><td style="background:#0d0d0d;padding:28px 44px;">
     <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
       <td>
-        <p style="margin:0;color:#fff;font-size:13px;font-weight:600;">ALTER</p>
-        <p style="margin:3px 0 10px;color:rgba(255,255,255,0.35);font-size:10px;">Conteúdo Relevante</p>
+        <img src="https://diagnostico.alterconteudo.com.br/logo-alter.png" alt="Alter" width="80" style="display:block;height:auto;opacity:0.7;margin-bottom:12px;">
         <p style="margin:0;font-size:11px;color:rgba(255,255,255,0.25);line-height:1.5;">Você recebeu esta análise por ter preenchido o Diagnóstico Express no site da Alter.</p>
       </td>
       <td align="right" valign="top"><p style="margin:0;font-size:11px;color:rgba(255,255,255,0.2);">© ${ano}</p></td>
